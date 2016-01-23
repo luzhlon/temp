@@ -1,0 +1,20 @@
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+iframe[name="frame-edit"],iframe[name="frame-table"] {
+    width: 100%;
+    border: 0;
+    overflow: hidden;
+    /*overflow-scrolling: ;*/
+}
+
+iframe[name="frame-edit"] {
+    height: 100%;
+}
+
+iframe[name="frame-table"] {
+    height: 50%;
+}

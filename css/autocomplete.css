@@ -1,0 +1,21 @@
+div.ac-frame {
+    border: none;
+    position: relative;
+}
+
+div.ac-dropdown {
+    position: absolute;
+    background: white;
+    border: solid 2px;
+    border-color: #1da7ee;
+    z-index: 99;
+}
+
+div.ac-option-item,div.ac-option-item-active {
+    padding-left: 5px;
+    cursor: hand;
+}
+
+div.ac-option-item-active {
+    background: #f5fafd;
+}
