@@ -47,7 +47,7 @@ input.input-edit, textarea.input-area {
     border: 3px solid rgba(0, 39, 59, 0.2);
     border-radius: 4px;
     font-size: 15px;
-    width: calc(95% - 16px);
+    width: 100%;
 }
 
 input.input-edit:focus {
@@ -69,13 +69,5 @@ textarea.input-area {
 input.input-button {
     width: 100px;
     height: 40px;
-    margin:40px auto;
-}
-
-#status-bar {
-    position: fixed;
-    width: 100%;
-    height: 30px;
-    left: 0;
-    top: calc(100% - 30px);
+    margin-top:40px;
 }

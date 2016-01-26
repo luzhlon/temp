@@ -25,7 +25,7 @@
 
 <body>
 
-<iframe name="frame-edit" src="component/edit.html"> </iframe>
+<iframe name="frame-edit" src="component/edit.jsp"> </iframe>
 <%--<iframe name="frame-table" src="component/table.html"> </iframe>--%>
 
 </body>

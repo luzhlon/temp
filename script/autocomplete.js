@@ -61,7 +61,7 @@ function AutoCompleter(input, cfg) {
 }
 // 添加 Option
 AutoCompleter.prototype.addOption = function(option) {
-    if(option == '' || this.option_table[option]) { return; }
+    if(this.option_table[option]) { return; }
     this.option_count++;
     this.option_table[option] = this.option_count;
     this.option_table[this.option_count] = option;

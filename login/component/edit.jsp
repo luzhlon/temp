@@ -1,10 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
+<%--
+  Created by IntelliJ IDEA.
+  User: tom
+  Date: 16-1-26
+  Time: 上午12:54
+  To change this template use File | Settings | File Templates.
+--%>
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <!--<title>Title</title>-->
-    <!--<link rel="stylesheet" href="/themes/default/easyui.css">-->
-    <!--<link rel="stylesheet" href="/themes/icon.css">-->
+    <title>EDIT</title>
     <link rel="stylesheet" href="/css/autocomplete.css"/>
     <link rel="stylesheet" href="edit.css"/>
     <script src="/js/jquery.js"></script>
@@ -13,14 +17,13 @@
     <script src="edit.js"></script>
 </head>
 <body>
-<!--<iframe name="empty_frame" style="width: 0; height: 0; border: none;"> </iframe>-->
-
 <div id="main">
 
     <form name="prescription" method="post" action="/input"
           enctype="application/x-www-form-urlencoded"
           target="empty_frame"
-          onsubmit="return onSubmit()"
+          <%--onsubmit="return onSubmit()"--%>
+          onreset="return onReset()"
           onkeydown="if(event.keyCode==13)return false;">
 
         <div class="column">
@@ -48,11 +51,12 @@
             </div>
             <div class="block">
                 <label>原文图像：</label>
-                <!--<%&#45;&#45; 存放服务器端的图片文件名 &#45;&#45;%>-->
+                <%--<%&#45;&#45; 存放服务器端的图片文件名 &#45;&#45;%>--%>
                 <input name="image" type="text" style="display: none;"/>
-                <!--<%&#45;&#45; 用来显示文件上传进度 &#45;&#45;%>-->
+                <%--<%&#45;&#45; 用来显示文件上传进度 &#45;&#45;%>--%>
                 <input id="output" type="text" style="display: none;"/>
-                <input type="file" onchange="onFile(this)"
+                <!--<input type="file" onchange="onFile(this)"-->
+                <input id="file_input" type="file"
                        accept="image/jpeg,image/png,image/bmp"/>
                 <img id="image" src="" />
             </div>
@@ -146,8 +150,7 @@
             <div class="small-padding"></div>
             <div class="small-block" >
                 <label>初诊复诊：</label>
-                <input name="first_second" class="input-edit" type="text"
-                       value="初诊" readonly="readonly"/>
+                <input name="first_second" class="input-edit" type="text" readonly="readonly"/>
             </div>
             <div class="small-block" >
                 <label>地域：</label>
@@ -164,12 +167,13 @@
             </div>
             <div class="small-padding"></div>
             <div class="small-block" >
-                <!--<input type="submit" value="提交"/>-->
+                <%--<input type="submit" value="提交" class="input-button"/>--%>
                 <input type="button" value="提交"
                        class="input-button"
                        style="background: coral;"
                        onclick="onSubmit()"/>
             </div>
+            <div id="status-bar" class="block"> </div>
         </div>
 
         <div class="column">
@@ -199,7 +203,6 @@
     </form>
 </div>
 
-<div id="status-bar"> </div>
 
 <script>
     SelectizeAll();
@@ -207,7 +210,7 @@
     LimitNumberInput(ps.page);
     FilterInput(ps.book, /[《》]/);
     FilterInput(ps.source, /[《》]/);
+    initImageUpload();
 </script>
-
 </body>
 </html>

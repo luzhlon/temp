@@ -15,7 +15,7 @@
 <body>
     <link rel="stylesheet" href="css/index.css" />
     <table border="0">
-    <form name="login_form" action="/logining"
+    <form name="login_form" action="/user"
           method="post" onsubmit="return onSubmit()">
       <tr> <td align="right">用户名：</td> <td><input class="edit" type="text" name="user_name"/></td> </tr>
       <tr> <td align="right">密码&nbsp;&nbsp;：</td> <td><input class="edit" type="password"name="user_passwd"/></td> </tr>

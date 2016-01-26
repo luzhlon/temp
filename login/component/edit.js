@@ -1,19 +1,3 @@
-
-// 需要外部页面设置
-_id = null;
-_onsuccess = null;
-
-function Request(uri, data, callback) {
-    $.post(uri, data, function(reText) {
-        try {
-            var r = JSON.parse(reText);
-            if(callback) callback(r);
-        } catch (e) {
-            console.log(e);
-        }
-    });
-}
-
 function RequestData(method, callback) {
     Request('/output', { method: method }, callback);
 }
@@ -188,6 +172,12 @@ function CheckFields() {
     return true;
 }
 
+function GetPresID() {
+    if(typeof _id == 'undefined')
+        _id = -1;
+    return _id;
+}
+
 function onSubmit() {
     if(!CheckFields()) {
         return false;
@@ -198,10 +188,10 @@ function onSubmit() {
     for(var i in ps) {
         form[ps[i].attr('name')] = ps[i].attr('value');
     }
-    if(_id) {   // 更新数据，而不是录入
-        form.method = 'update_prescript';
-    } else {
-        form.method = 'insert_prescript';
+    if(GetPresID() < 0) {
+        form.method = 'insert';
+    } else {             // 更新数据，而不是录入
+        form.method = 'update';
     }
 
     var name = ps.name.attr('value');
@@ -212,34 +202,55 @@ function onSubmit() {
                 // 数据录入成功
                 SetStatusBar(name + ' 录入成功');
                 GetForm().reset();
-                console.log('Input success.');
             } else {
-                console.log('Input failure.');
+                SetStatusBar(name + ' 录入失败:' + json.reason, 5000);
             }
         });
 
     return false;
 }
 
-function onFile(imgFile) {
-    var img_name = document.getElementsByName('image')[0];
+function getImageInput() {
+    return document.getElementsByName('image')[0];
+}
+
+function getImageElement() {
+    return document.getElementById('image');
+}
+
+function getImageOutput() {
+    return document.getElementById('output');
+}
+
+function initImageUpload() {
+    var img = getImageElement();
+    var out = getImageOutput();
+
+    var img_name = getImageInput();
     img_name.value = ""; //
 
-    var img = document.getElementById('image');
-    img.src = "";
-    var out = document.getElementById('output');
-    var fo = imgFile.files[0]; // File Object
-    // 隐藏图片框并显示进度框
-    img.style = 'display: none;';
-    out.style = 'display:';
-
-    var fd = new FormData(); // FormData Object
-    fd.append('method', 'upload');
-    fd.append('file', fo);
-
-    var xhr = getXHR();
-    xhr.onreadystatechange = function() {
-        if(xhr.readyState === 4 && xhr.status == 200) {
+    setUpload('#file_input', {
+        url : '/upload',
+        fields: { method : 'upload' },
+        onchange: function(fileObj) {
+            // 隐藏图片框并显示进度框
+            img.src = "";
+            img.style = 'display: none;';
+            out.style = 'display:';
+            return true;
+        },
+        onprogress: function(evt) {
+            if (evt.lengthComputable) {
+                out.value = Math.round((evt.loaded / evt.total)  * 100) + '%';
+            }
+        },
+        onerror : function() {
+            out.value = fileNames + ' 上传失败。';
+        },
+        onuploaded: function() {
+            out.value = '上传完成。';
+        },
+        onresponse : function(xhr) {
             var r = JSON.parse(xhr.responseText);
             if(r.success) {
                 img_name.value = r.result;
@@ -251,28 +262,7 @@ function onFile(imgFile) {
             }
             console.log(xhr.responseText);
         }
-    };
-    xhr.upload.addEventListener( 'progress',
-        function uploadProgress(evt) {
-            // evt 有三个属性：
-            // lengthComputable – 可计算的已上传字节数
-            // total – 总的字节数
-            // loaded – 到目前为止上传的字节数
-            if (evt.lengthComputable) {
-                out.value = Math.round((evt.loaded / evt.total)  * 100) + '%';
-            }
-        }, false); // false表示在事件冒泡阶段处理
-
-    xhr.upload.onload = function() {
-        out.value = '上传完成。';
-    };
-
-    xhr.upload.onerror = function(e) {
-        out.value = fileNames + ' 上传失败。';
-    };
-
-    xhr.open('post', '/upload');            // 发送表单对象。
-    xhr.send(fd);
+    });
 }
 
 function SetStatusBar(str, delay) {
@@ -280,4 +270,9 @@ function SetStatusBar(str, delay) {
     window.setTimeout(function() {
         stb.text('');
     }, delay || 2000);
+}
+
+function onReset() {
+    getImageElement().src = '';
+    return true;
 }
