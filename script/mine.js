@@ -51,6 +51,7 @@ function setUpload(fileSelc, options) {
      */
     $(fileSelc).bind('change', function() {
         var fileObject = this.files[0];
+        options.onchange = options.onchange || function(){return true};
         if(options.onchange(fileObject)) {
             var xhr = getXHR();
             xhr.onreadystatechange = function() {

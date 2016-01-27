@@ -11,6 +11,8 @@
 <head>
   <title>中药信息管理系统</title>
   <link rel="stylesheet" href="../css/main.css"/>
+  <script src="../js/jquery.js"></script>
+  <script src="../script/mine.js"></script>
 </head>
 
 <%-- 主页面 --%>
@@ -37,6 +39,19 @@
     </ul>
   </div>
   <iframe id="main-frame" src="main.html"> </iframe>
+
+  String user_name = null;<script>
+    window.setInterval(function() {
+      Request('/server', {
+        method: 'heartbeat'
+      }, function(json) {
+        if(!json.success) {
+          alert("Login Expired. Please reLogin.");
+          location.replace("/index.jsp");
+        }
+      });
+    }, 30000); //
+  </script>
 
 </body>
 </html>

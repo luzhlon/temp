@@ -91,11 +91,10 @@ function SelectizeAll(selct) {
     var ps = GetPrescript();
 
     var firSec = new AutoCompleter(ps.firsec);
-    firSec.addOption('初诊');
-    firSec.addOption('复诊');
+    firSec.addOption('初诊'); firSec.addOption('复诊');
+    firSec.addOption('');
     var sex = new AutoCompleter(ps.sex);
-    sex.addOption('男');
-    sex.addOption('女');
+    sex.addOption('男'); sex.addOption('女'); sex.addOption('');
     var season = new AutoCompleter(ps.season);
     var region = new AutoCompleter(ps.region);
 
