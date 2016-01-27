@@ -230,7 +230,7 @@ function initImageUpload() {
 
     setUpload('#file_input', {
         url : '/upload',
-        fields: { method : 'upload' },
+        fields: { method : 'image' },
         onchange: function(fileObj) {
             // 隐藏图片框并显示进度框
             img.src = "";

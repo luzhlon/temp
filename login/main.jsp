@@ -40,7 +40,7 @@
   </div>
   <iframe id="main-frame" src="main.html"> </iframe>
 
-  String user_name = null;<script>
+  <script>
     window.setInterval(function() {
       Request('/server', {
         method: 'heartbeat'
