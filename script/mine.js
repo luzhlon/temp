@@ -90,4 +90,11 @@ function Request(uri, data, callback) {
     });
 }
 
+function IsDefined(x) {
+    if(typeof x == 'undefined')
+        return false;
+    else
+        return true;
+}
+
 

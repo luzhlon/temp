@@ -1,4 +1,4 @@
-<%@ page import="com.luzhlon.User" %><%--
+<%@ page import="com.tool.User" %><%--
   Created by IntelliJ IDEA.
   User: tom
   Date: 16-1-12

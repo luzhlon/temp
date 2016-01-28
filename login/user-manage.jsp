@@ -1,7 +1,7 @@
-<%@ page import="com.luzhlon.DB" %>
+<%@ page import="com.tool.DB" %>
 <%@ page import="com.sun.xml.internal.ws.util.ReadAllStream" %>
 <%@ page import="java.sql.ResultSet" %>
-<%@ page import="com.luzhlon.User" %><%--
+<%@ page import="com.tool.User" %><%--
   Created by IntelliJ IDEA.
   User: tom
   Date: 16-1-25

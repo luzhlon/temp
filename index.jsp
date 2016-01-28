@@ -1,7 +1,7 @@
 <%-- Created by IntelliJ IDEA. --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%-- 检测是否已经登录 --%>
-<%@ page import="com.luzhlon.User"%>
+<%@ page import="com.tool.User"%>
 
 <html>
   <head>

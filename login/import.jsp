@@ -13,41 +13,85 @@
     <script src="../script/mine.js"></script>
 </head>
 <body>
+<div id="content">
+    <div id="input-area">
+        <label>选择Excel文件： </label>
+        <input name="excel-file" type="file" accept="application/vnd.ms-excel"/>
+        <div id="output"></div>
+    </div>
+    <div id="output-area">
+        <ul id="output-list">
+        </ul>
+    </div>
+</div>
 
-<label>选择Excel文件： </label>
-<input name="excel-file" type="file" accept="application/vnd.ms-excel"/>
-<label id="upload-progress"></label>
+<style>
+    div#input-area {
+        width: 100%;
+    }
+    div#output-area {
+        width: 100%;
+    }
+    ul#output-list {
+        width: 100%;
+    }
+</style>
 
 <script>
-    function setOutput(text) {
-        _out = _out || $('#upload-progress');
-        _out.text(text);
+    _out = $('#output-list');
+    _timer = null;
+    var fileInput = $('[name="excel-file"]');
+    function putLog(text) {
+        _out.append($('<li></li>').text(text));
     }
-    setUpload('#upload-progress', {
+    // 开始获取导入日志
+    function BeginGetLog() {
+        _timer = setInterval(function() {
+
+        }, 2000);
+    }
+    // 结束获取日志
+    function EndGetLog() {
+        clearInterval(_timer);
+    }
+    // 开始导入
+    function BeginImport(file) {
+        _out.empty();
+        putLog("正在导入 " + fileInput.attr('value'));
+        Request('/import', {
+            method: 'excel',
+            file: file
+        }, function(json) {
+            EndGetLog();
+            for(var i in json.log)
+                putLog(json.log[i]);
+            if(json.success) {
+                putLog('导入成功！');
+            } else {
+                putLog('导入失败:'+json.reason);
+            }
+        });
+        BeginGetLog();
+    }
+    setUpload(fileInput, {
         url: '/upload',
         field: { method: 'excel' },
         onprogress: function(evt) {
             if (evt.lengthComputable) {
-                var per = Math.round((evt.loaded / evt.total)  * 100) + '%';
-                setOutput('Uploaded: ' + per);
+                var per = Math.round((evt.loaded / evt.total)  * 100);
+                putLog('已上传: ' + per + '%');
             }
         },
         onuploaded: function() {
-            setOutput('Upload success. Importing...');
+            putLog('上传成功，正在导入...');
         },
         onerror: function() {
-            setOutput('Upload error.');
+            putLog('上传出错.');
         },
         onresponse: function(xhr) {
             var json = JSON.parse(xhr.responseText);
             if(!json.success) return;
-            setOutput("Importing " + json.result);
-            Request('/import', {
-                method: 'excel',
-                file: json.result
-            }, function() {
-
-            });
+            BeginImport(json.result);
         }
     });
 </script>
