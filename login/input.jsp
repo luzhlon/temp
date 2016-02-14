@@ -10,13 +10,9 @@
 <html>
 <head>
   <title>录入</title>
-  <link rel="stylesheet" href="../themes/default/easyui.css">
-  <link rel="stylesheet" href="../themes/icon.css">
   <link rel="stylesheet" href="../css/autocomplete.css"/>
   <link rel="stylesheet" href="../css/input.css"/>
 
-  <script src="../js/jquery.min.js"></script>
-  <script src="../js/jquery.easyui.min.js"></script>
   <script src="../script/mine.js"></script>
   <script src="../script/autocomplete.js"></script>
   <script src="../script/mine.js"></script>
@@ -26,7 +22,6 @@
 <body>
 
 <iframe name="frame-edit" src="component/edit.jsp"> </iframe>
-<%--<iframe name="frame-table" src="component/table.html"> </iframe>--%>
 
 </body>
 </html>

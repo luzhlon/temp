@@ -10,37 +10,77 @@
 <html>
 <head>
   <title>中药信息管理系统</title>
-  <link rel="stylesheet" href="../css/main.css"/>
+  <link rel="stylesheet" href="../skins/Aqua/css/ligerui-all.css">
   <script src="../js/jquery.js"></script>
+  <script src="../js/ligerui.min.js"></script>
   <script src="../script/mine.js"></script>
+  <style>
+    div#sys-navbar {
+      width: 100%;
+      height: 100%;
+      background: #191818 none repeat scroll 0 0;
+      /*overflow-y: auto;*/
+    }
+    div#sys-navbar-header {
+      font-size: 110%;
+      width: 100%;
+      padding: 10px;
+      color: #FFF;
+      margin: 0;
+    }
+    div#sys-navbar ul {
+      width: 100%;
+      border-top: 1px solid #333;
+    }
+    div#sys-navbar li {
+      /*float: left;*/
+      color: #999;
+      padding: 10px;
+      /*padding: 0.6em 0 0.6em 0.6em;*/
+    }
+    div#sys-navbar li:hover {
+      cursor: pointer;
+      background: #333 none repeat scroll 0 0;
+    }
+    #main-frame {
+      border: 0;
+      height: 100%;
+      width: 100%;
+    }
+  </style>
 </head>
 
 <%-- 主页面 --%>
 <body>
+<div id="main-layout" style="height: 100%;">
+  <div position="left">
   <div id="sys-navbar">
     <div id="sys-navbar-header">中医方剂管理系统</div>
-    <div id="sys-navbar-padding"></div>
     <ul>
-      <li onclick="document.getElementById('main-frame').src='/login/input.jsp'">
-        <a href="javascript:void(0)">录入</a></li>
-      <li onclick="document.getElementById('main-frame').src='/login/import.jsp'">
-        <a href="javascript:void(0)">导入</a></li>
-      <li onclick="document.getElementById('main-frame').src='/login/statistic.jsp'">
-        <a href="javascript:void(0)">统计</a></li>
-      <li onclick="document.getElementById('main-frame').src='/login/analyze.jsp'">
-        <a href="javascript:void(0)">分析</a></li>
-      <li onclick="document.getElementById('main-frame').src='/login/help.jsp'">
-        <a href="javascript:void(0)">帮助</a></li>
-
+      <li href="component/edit.jsp">方剂</li>
+      <li href="tables.jsp">著作</li>
+      <li href="import.jsp">导入</li>
+      <li href="help.jsp">帮助</li>
       <% if(User.GetCurrentUser(session).IsAdmin()) { %>
-      <li onclick="document.getElementById('main-frame').src='/login/user-manage.jsp'">
-        <a href="javascript:void(0)">User Manager</a></li>
+      <li href="user-manage.jsp">User Manager</li>
       <% } %>
     </ul>
+  </div></div>
+  <div position="center">
+    <iframe id="main-frame" src="main.html"></iframe>
   </div>
-  <iframe id="main-frame" src="main.html"> </iframe>
-
+</div>
   <script>
+    // 布局
+    $('#main-layout').ligerLayout({
+      leftWidth: 130,
+      height: "100%"
+    });
+    //
+    $('#sys-navbar ul li').bind('click', function() {
+      $('#main-frame').attr('src', $(this).attr('href'));
+    });
+    // 心跳包
     window.setInterval(function() {
       Request('/server', {
         method: 'heartbeat'
@@ -50,8 +90,7 @@
           location.replace("/index.jsp");
         }
       });
-    }, 30000); //
+    }, 30000);
   </script>
-
 </body>
 </html>

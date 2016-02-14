@@ -210,6 +210,8 @@
     LimitNumberInput(ps.page);
     FilterInput(ps.book, /[《》]/);
     FilterInput(ps.source, /[《》]/);
+    FilterInput(ps.sex, /[\s]/);
+    FilterInput(ps.firSec, /[\s]/);
     initImageUpload();
 </script>
 </body>

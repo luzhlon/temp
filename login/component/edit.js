@@ -92,9 +92,9 @@ function SelectizeAll(selct) {
 
     var firSec = new AutoCompleter(ps.firsec);
     firSec.addOption('初诊'); firSec.addOption('复诊');
-    firSec.addOption('');
+    firSec.addOption(' ');
     var sex = new AutoCompleter(ps.sex);
-    sex.addOption('男'); sex.addOption('女'); sex.addOption('');
+    sex.addOption('男'); sex.addOption('女'); sex.addOption(' ');
     var season = new AutoCompleter(ps.season);
     var region = new AutoCompleter(ps.region);
 
@@ -188,9 +188,9 @@ function onSubmit() {
         form[ps[i].attr('name')] = ps[i].attr('value');
     }
     if(GetPresID() < 0) {
-        form.method = 'insert';
+        form.method = 'insert_prescript';
     } else {             // 更新数据，而不是录入
-        form.method = 'update';
+        form.method = 'update_prescript';
     }
 
     var name = ps.name.attr('value');

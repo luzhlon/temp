@@ -6,7 +6,7 @@
 <html>
   <head>
     <title>登录</title>
-    <script src="js/jquery.min.js"></script>
+    <script src="js/jquery.js"></script>
     <script src="js/jQuery.md5.js"></script>
     <script src="script/mine.js"></script>
     <script src="script/index.js"></script>
