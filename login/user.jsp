@@ -22,8 +22,8 @@
     <script src="../js/jquery.js"></script>
     <script src="../js/jquery.easyui.min.js"></script>
     <script src="../js/jQuery.md5.js"></script>
-    <script src="../script/mine.js"></script>
-    <script src="../script/autocomplete.js"></script>
+    <script src="../js/mine.js"></script>
+    <script src="../js/autocomplete.js"></script>
 </head>
 <body>
 <table style="border: none;width: 200px;">

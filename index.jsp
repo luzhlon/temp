@@ -6,22 +6,36 @@
 <html>
   <head>
     <title>登录</title>
-    <script src="js/jquery.js"></script>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/index.css" />
+    <script src="js/jquery-2.2.0.min.js"></script>
+    <script type="text/javascript" src="http://www.francescomalagrino.com/BootstrapPageGenerator/3/js/jquery-ui"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="js/jQuery.md5.js"></script>
-    <script src="script/mine.js"></script>
-    <script src="script/index.js"></script>
+    <script src="js/mine.js"></script>
+    <script src="js/index.js"></script>
   </head>
 
 <body>
-    <link rel="stylesheet" href="css/index.css" />
-    <table border="0">
+<div id="main">
     <form name="login_form" action="/user"
           method="post" onsubmit="return onSubmit()">
-      <tr> <td align="right">用户名：</td> <td><input class="edit" type="text" name="user_name"/></td> </tr>
-      <tr> <td align="right">密码&nbsp;&nbsp;：</td> <td><input class="edit" type="password"name="user_passwd"/></td> </tr>
-      <tr> <td/> <td><input class="submit" type="submit" value="登录" /></td> </tr>
+        <div class="form-group">
+            <span class="glyphicon glyphicon-user"></span>
+            <input type="text" class="form-control"
+                   name="user_name" id="firstname" placeholder="用户名">
+        </div>
+        <div class="form-group">
+            <span class="glyphicon glyphicon-lock"></span>
+            <input type="password" class="form-control"
+                   name="user_passwd" id="lastname" placeholder="密码">
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">登录</button>
+            </div>
+        </div>
     </form>
-    </table>
     <script>
         var name = document.getElementsByName("user_name")[0];
         var passwd = document.getElementsByName("user_passwd")[0];
@@ -43,5 +57,6 @@
         passwd.focus();
     <% } %>
     </script>
+</div>
 </body>
 </html>

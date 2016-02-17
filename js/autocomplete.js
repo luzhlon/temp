@@ -43,7 +43,7 @@ function AutoCompleter(input, cfg) {
     var config = {
         maxShowItems: 50,   // Option最大显示数目
         onSelect : function(ctl, text) {
-            ctl.target.attr('value', text);
+            ctl.target.val(text);
             ctl.showDropdown(false);
         }
     };
@@ -178,12 +178,12 @@ AutoCompleter.prototype.select = function() {
 
     if(text && index) {
         var re = new RegExp('(.*[,\\s，、。或]+).*$');
-        var ma = re.exec(this.target.attr('value'));
+        var ma = re.exec(this.target.val());
 
         if(ma) {
-            this.target.attr('value', ma[1] + text);
+            this.target.val(ma[1] + text);
         } else {
-            this.target.attr('value', text);
+            this.target.val(text);
         }
         //callback(this,text);
         // 与第一个交换位置
@@ -197,7 +197,7 @@ AutoCompleter.prototype.select = function() {
 };
 // 分割
 AutoCompleter.prototype.getSplit = function() {
-    return this.target.attr('value').split(/[,\s，、。或]+/);
+    return this.target.val().split(/[,\s，、。或]+/);
 };
 // 失去焦点时
 AutoCompleter.prototype.onblur = function() {

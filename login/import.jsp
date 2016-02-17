@@ -10,7 +10,7 @@
 <head>
     <title>导入</title>
     <script src="../js/jquery.js"></script>
-    <script src="../script/mine.js"></script>
+    <script src="../js/mine.js"></script>
 </head>
 <body>
 <div id="content">
@@ -39,39 +39,42 @@
 
 <script>
     _out = $('#output-list');
-    _timer = null;
     var fileInput = $('[name="excel-file"]');
     function putLog(text) {
         _out.append($('<li></li>').text(text));
     }
-    // 开始获取导入日志
-    function BeginGetLog() {
-        _timer = setInterval(function() {
-
-        }, 2000);
-    }
-    // 结束获取日志
-    function EndGetLog() {
-        clearInterval(_timer);
+    function webSocketId(id) {
+        if(id) _wsid = id;
+        else return _wsid;
     }
     // 开始导入
     function BeginImport(file) {
-        _out.empty();
-        putLog("正在导入 " + fileInput.attr('value'));
-        Request('/import', {
-            method: 'excel',
-            file: file
-        }, function(json) {
-            EndGetLog();
-            for(var i in json.log)
-                putLog(json.log[i]);
-            if(json.success) {
-                putLog('导入成功！');
-            } else {
-                putLog('导入失败:'+json.reason);
-            }
-        });
-        BeginGetLog();
+        var ws = new WebSocket("ws://localhost:8080/websocket");
+        ws.onmessage = function(msg) {
+            // 收到WebSocket id
+            webSocketId(msg.data);
+            // 准备接收导入日志
+            ws.onmessage = function(msg) { putLog(msg.data); };
+            // 请求导入
+            _out.empty();
+            putLog("正在导入 " + fileInput.attr('value'));
+            Request('/import', {
+                method: 'excel',
+                wsid: webSocketId(),
+                file: file
+            }, function(json) {
+                if(json.success) {
+                    putLog('导入成功！');
+                } else {
+                    putLog('导入失败:'+json.reason);
+                }
+                ws.close();
+            });
+        };
+        ws.onopen = function() { };
+        ws.onclose = function() {
+            webSocketId(null);
+        };
     }
     setUpload(fileInput, {
         url: '/upload',

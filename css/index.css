@@ -1,6 +1,6 @@
-body table {
-    margin: auto;
+div#main {
     margin-top: 10%;
+    padding: 100px 300px;
 }
 input.edit {
     transition: border-color 0.2s linear 0s;

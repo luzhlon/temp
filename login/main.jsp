@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="../skins/Aqua/css/ligerui-all.css">
   <script src="../js/jquery.js"></script>
   <script src="../js/ligerui.min.js"></script>
-  <script src="../script/mine.js"></script>
+  <script src="../js/mine.js"></script>
   <style>
     div#sys-navbar {
       width: 100%;
@@ -57,8 +57,8 @@
   <div id="sys-navbar">
     <div id="sys-navbar-header">中医方剂管理系统</div>
     <ul>
-      <li href="component/edit.jsp">方剂</li>
-      <li href="tables.jsp">著作</li>
+      <li href="input.jsp">方剂</li>
+      <li href="book.jsp">著作</li>
       <li href="import.jsp">导入</li>
       <li href="help.jsp">帮助</li>
       <% if(User.GetCurrentUser(session).IsAdmin()) { %>

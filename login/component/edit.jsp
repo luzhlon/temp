@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="/css/autocomplete.css"/>
     <link rel="stylesheet" href="edit.css"/>
     <script src="/js/jquery.js"></script>
-    <script src="/script/autocomplete.js"></script>
-    <script src="/script/mine.js"></script>
+    <script src="/js/autocomplete.js"></script>
+    <script src="/js/mine.js"></script>
     <script src="edit.js"></script>
 </head>
 <body>

@@ -8,13 +8,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>子表</title>
+    <title>书籍</title>
     <link rel="stylesheet" href="../skins/Aqua/css/ligerui-all.css">
     <link rel="stylesheet" href="../skins/ligerui-icons.css">
     <link rel="stylesheet" href="../skins/Gray/css/all.css">
     <script src="../js/jquery.js"></script>
     <script src="../js/ligerui.min.js"></script>
-    <script src="../script/mine.js"></script>
+    <script src="../js/mine.js"></script>
 </head>
 <body style="width: 100%; height: 100%;">
 
