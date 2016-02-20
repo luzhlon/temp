@@ -6,14 +6,10 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>导入</title>
-    <script src="../js/jquery.js"></script>
-    <script src="../js/mine.js"></script>
-</head>
-<body>
-<div id="content">
+<div class="panel-heading">
+    <h3 class="panel-title">方剂导入</h3>
+</div>
+<div class="panel-body" id="content">
     <div id="input-area">
         <label>选择Excel文件： </label>
         <input name="excel-file" type="file" accept="application/vnd.ms-excel"/>
@@ -24,19 +20,6 @@
         </ul>
     </div>
 </div>
-
-<style>
-    div#input-area {
-        width: 100%;
-    }
-    div#output-area {
-        width: 100%;
-    }
-    ul#output-list {
-        width: 100%;
-    }
-</style>
-
 <script>
     _out = $('#output-list');
     var fileInput = $('[name="excel-file"]');
@@ -98,6 +81,3 @@
         }
     });
 </script>
-
-</body>
-</html>

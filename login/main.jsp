@@ -6,91 +6,86 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
-<html>
+<html lang="en">
 <head>
-  <title>中药信息管理系统</title>
-  <link rel="stylesheet" href="../skins/Aqua/css/ligerui-all.css">
-  <script src="../js/jquery.js"></script>
-  <script src="../js/ligerui.min.js"></script>
-  <script src="../js/mine.js"></script>
-  <style>
-    div#sys-navbar {
-      width: 100%;
-      height: 100%;
-      background: #191818 none repeat scroll 0 0;
-      /*overflow-y: auto;*/
-    }
-    div#sys-navbar-header {
-      font-size: 110%;
-      width: 100%;
-      padding: 10px;
-      color: #FFF;
-      margin: 0;
-    }
-    div#sys-navbar ul {
-      width: 100%;
-      border-top: 1px solid #333;
-    }
-    div#sys-navbar li {
-      /*float: left;*/
-      color: #999;
-      padding: 10px;
-      /*padding: 0.6em 0 0.6em 0.6em;*/
-    }
-    div#sys-navbar li:hover {
-      cursor: pointer;
-      background: #333 none repeat scroll 0 0;
-    }
-    #main-frame {
-      border: 0;
-      height: 100%;
-      width: 100%;
-    }
-  </style>
+  <meta charset="utf-8">
+  <title>中医方剂管理系统</title>
+  <link href="../css/font-awesome.min.css" rel="stylesheet">
+  <link href="../css/bootstrap.min.css" rel="stylesheet">
+  <link href="../css/bootstrap-table.min.css" rel="stylesheet">
+  <link href="../css/templatemo-style.css" rel="stylesheet">
+  <script src="../js/jquery-2.2.0.min.js"></script>
+  <script src="../js/bootstrap.min.js"></script>
+  <script src="../js/bootstrap-table.min.js"></script>
+  <script src="../js/bootstrap-dialog.min.js"></script>
+  <script src="../js/extensions/resizable/bootstrap-table-resizable.min.js"></script>
+  <script src="../js/extensions/resizable/colResizable.js"></script>
+  <script src="../js/extensions/editable/bootstrap-table-editable.min.js"></script>
+  <script src="../js/extensions/editable/editable.js"></script>
+  <script src="../js/luzhlon.js"></script>
 </head>
-
-<%-- 主页面 --%>
 <body>
-<div id="main-layout" style="height: 100%;">
-  <div position="left">
-  <div id="sys-navbar">
-    <div id="sys-navbar-header">中医方剂管理系统</div>
-    <ul>
-      <li href="input.jsp">方剂</li>
-      <li href="book.jsp">著作</li>
-      <li href="import.jsp">导入</li>
-      <li href="help.jsp">帮助</li>
-      <% if(User.GetCurrentUser(session).IsAdmin()) { %>
-      <li href="user-manage.jsp">User Manager</li>
-      <% } %>
-    </ul>
-  </div></div>
-  <div position="center">
-    <iframe id="main-frame" src="main.html"></iframe>
+<!-- Left column -->
+<div class="templatemo-flex-row">
+  <div class="templatemo-sidebar">
+    <header class="templatemo-site-header">
+      <div class="square"></div>
+      <h1>中医</h1>
+    </header>
+    <div class="profile-photo-container">
+      <img src="../images/profile-photo.jpg" alt="Profile Photo" class="img-responsive">
+      <div class="profile-photo-overlay"></div>
+    </div>
+    <div class="mobile-menu-icon">
+      <i class="fa fa-bars"></i>
+    </div>
+    <nav class="templatemo-left-nav">
+      <ul>
+        <li><a id="welcome" href="main.jsp"><i class="fa fa-home fa-fw"></i>主页</a></li>
+        <li><a id="prescript" href="main.jsp?page=prescript"><i class="fa fa-bar-chart fa-fw"></i>方剂</a></li>
+        <li><a id="book" href="main.jsp?page=book"><i class="fa fa-bar-chart fa-fw"></i>书籍</a></li>
+        <li><a id="import" href="main.jsp?page=import"><i class="fa fa-database fa-fw"></i>导入</a></li>
+        <%--<li><a href="help.html"><i class="fa fa-map-marker fa-fw"></i>帮助</a></li>--%>
+      </ul>
+    </nav>
   </div>
-</div>
-  <script>
-    // 布局
-    $('#main-layout').ligerLayout({
-      leftWidth: 130,
-      height: "100%"
+  <!-- Main content -->
+  <div class="templatemo-content col-1 light-gray-bg">
+    <div class="templatemo-content-container">
+      <div class="panel panel-default">
+
+        <%
+          String p = request.getParameter("page");
+          if(p == null) p = "welcome";
+          String PageStr = p + ".jsp";
+          String SelStr = "a#" + p;
+        %>
+        <jsp:include page="<%=PageStr%>"/>
+        <script> $("<%=SelStr%>").attr('class', 'active'); </script>
+        <div class="panel-footer">
+          <footer class="text-right">
+            <p>Copyright &copy; 2016 CodeSoul
+              | Designed by <a href="http://luzhlon.github.io" target="_parent">luzhlon</a></p>
+          </footer>
+        </div>
+      </div>
+      </div>
+
+    </div>
+  </div>
+<script>
+  // 心跳包
+  window.setInterval(function() {
+    Request('/server', {
+      method: 'heartbeat'
+    }, function(json) {
+      if(!json.success) {
+        alert("Login Expired. Please reLogin.");
+        location.replace("/index.jsp");
+      }
     });
-    //
-    $('#sys-navbar ul li').bind('click', function() {
-      $('#main-frame').attr('src', $(this).attr('href'));
-    });
-    // 心跳包
-    window.setInterval(function() {
-      Request('/server', {
-        method: 'heartbeat'
-      }, function(json) {
-        if(!json.success) {
-          alert("Login Expired. Please reLogin.");
-          location.replace("/index.jsp");
-        }
-      });
-    }, 30000);
-  </script>
+  }, 30000);
+</script>
 </body>
 </html>
+

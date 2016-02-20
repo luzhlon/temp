@@ -1,5 +1,4 @@
 <%@ page import="com.tool.DB" %>
-<%@ page import="com.sun.xml.internal.ws.util.ReadAllStream" %>
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="com.tool.User" %><%--
   Created by IntelliJ IDEA.
@@ -10,8 +9,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    if(!User.GetCurrentUser(session).IsAdmin())
-        response.sendRedirect("main.html");
+    if(!User.GetSessionUser(session).admin())
+        response.sendRedirect("main.jsp");
 %>
 <html>
 <head>
@@ -22,7 +21,7 @@
     <script src="../js/jquery.js"></script>
     <script src="../js/jquery.easyui.min.js"></script>
     <script src="../js/jQuery.md5.js"></script>
-    <script src="../js/mine.js"></script>
+    <script src="../js/luzhlon.js"></script>
     <script src="../js/autocomplete.js"></script>
 </head>
 <body>

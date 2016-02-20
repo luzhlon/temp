@@ -13,7 +13,7 @@
   <link rel="stylesheet" href="../css/input.css"/>
   <script src="../js/jquery-2.2.0.min.js"></script>
   <script src="../js/autocomplete.js"></script>
-  <script src="../js/mine.js"></script>
+  <script src="../js/luzhlon.js"></script>
   <script src="../js/input.js"></script>
 </head>
 <body>
@@ -202,15 +202,6 @@
     </div>
   </form>
 </div>
-<script>
-  SelectizeAll();
-  var ps = GetPrescript();
-  LimitNumberInput(ps.page);
-  FilterInput(ps.book, /[《》]/);
-  FilterInput(ps.source, /[《》]/);
-  FilterInput(ps.sex, /[\s]/);
-  FilterInput(ps.firSec, /[\s]/);
-  initImageUpload();
-</script>
+<script src="../js/input.js"></script>
 </body>
 </html>
