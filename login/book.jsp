@@ -20,12 +20,14 @@
         </div>
     </div>
     <table id="table-book"
-           data-height="500"
+           data-height="520"
            data-toggle="table"
            data-toolbar="#book-toolbar"
            data-pagination="true"
            data-side-pagination="server"
+           data-unique-id="id"
            data-click-to-select="true"
+           data-single-select="true"
            data-show-refresh="true"
            data-show-toggle="true"
            data-show-columns="true"
@@ -33,6 +35,7 @@
            data-resizable="true">
         <thead>
         <tr>
+            <th data-field="state" data-checkbox="true"></th>
             <th data-field="id" data-align="center">ID</th>
             <th data-field="name" data-align="center" data-editable="true">著作</th>
             <th data-field="author" data-align="center" data-editable="true">作者</th>
@@ -54,27 +57,29 @@
                Modal Title
             </h4>
          </div>
+         <form onsubmit="return book_dialog.onsubmit()">
          <div class="modal-body">
              <div class="form-group">
                  <label>著作：</label>
-                 <input type="text" id="book-name"/>
+                 <input type="text" id="book-name" class="form-control"/>
              </div>
              <div class="form-group">
                  <label>作者：</label>
-                 <input type="text" id="book-author"/>
+                 <input type="text" id="book-author" class="form-control"/>
              </div>
              <div class="form-group">
                  <label>朝代：</label>
-                 <input type="text" id="book-dynasty"/>
+                 <input type="text" id="book-dynasty" class="form-control"/>
              </div>
          </div>
          <div class="modal-footer">
             <button type="button" id="modal-button-cancel"
                     class="btn btn-default"
                     data-dismiss="modal">取消</button>
-            <button type="button" id="modal-button-ok"
+            <button type="submit" id="modal-button-ok"
                     class="btn btn-primary">确定</button>
          </div>
+         </form>
       </div><!-- /.modal-content -->
     </div><!-- /.modal -->
 </div>
@@ -98,14 +103,14 @@
             }
         });
     });
-    //*
+    /*
     table_book.on('click-row.bs.table', function(e, row, $element) {
         $('.success').removeClass('success');
         $($element).addClass('success');
     });  // */
-    var book = {
+    var book_dialog = {
         $modal : $('#book-modal'),
-        operate : 'new',
+        edit_row: null,
         GetValues : function() {
             return {
                 name : $('#book-name').val(),
@@ -118,6 +123,33 @@
             $('#book-author').val(vals.author);
             $('#book-dynasty').val(vals.dynasty);
         },
+        onsubmit: function() {
+            var method, suc_tip, fail_tip;
+            var values = this.GetValues();
+            if(this.edit_row) {
+                method = 'update';
+                values.id = this.edit_row.id;
+                suc_tip = '著作更新成功！';
+                fail_tip = '著作更新失败:';
+            } else {
+                method = 'insert';
+                suc_tip = '著作创建成功！';
+                fail_tip = '著作创建失败:';
+            }
+            Request(
+                    '/data?object=book&method=' + method,
+                    values, function(json) {
+                        if (json.success) {
+                            ShowToolTip($('#button-new'), suc_tip);
+                            table_book.bootstrapTable('updateByUniqueId', values.id, values);
+                        }
+                        else
+                            ShowToolTip($('#button-new'), fail_tip + json.reason);
+                    }
+            );
+            this.$modal.modal('hide');
+            return false;
+        },
         InitModal : function() {
             var self = this;
             var modal = this.$modal;
@@ -125,27 +157,7 @@
                 modal.modal('hide');
             });
             $('#modal-button-ok').click(function() {
-                var method, suc_tip, fail_tip;
-                var values = self.GetValues();
-                if(self.operate == 'new') {
-                    method = 'insert';
-                    suc_tip = '著作创建成功！';
-                    fail_tip = '著作创建失败:';
-                } else {
-                    method = 'update';
-                    suc_tip = '著作更新成功！';
-                    fail_tip = '著作更新失败:';
-                }
-                Request(
-                        '/data?object=book&method=' + method,
-                        values, function(json) {
-                            if (json.success)
-                                ShowToolTip($('#button-new'), suc_tip);
-                            else
-                                ShowToolTip($('#button-new'), fail_tip + json.reason);
-                        }
-                );
-                modal.modal('hide');
+                self.onsubmit();
             });
         },
         ModalTitle : function(text) {
@@ -153,25 +165,27 @@
         },
         New : function() {
             this.ModalTitle("新的著作");
-            this.operate = 'new';
             this.SetValues({name:'',author:'',dynasty:''});
+            this.edit_row = null;
             this.$modal.modal('show');
         },
         Edit : function(row) {
             if(!row) return;
             this.ModalTitle("编辑著作 ID:" + row.id);
-            this.operate = 'edit';
             this.SetValues(row);
+            this.edit_row = row;
             this.$modal.modal('show');
         }
     };
-    book.InitModal();
+    book_dialog.InitModal();
+    table_book.on('dbl-click-row.bs.table', function(e, row, $element) {
+        book_dialog.Edit(row);
+    });
     $('#button-new').click(function() {
-        book.New();
+        book_dialog.New();
     });
     $('#button-edit').click(function() {
-        var row = TableSelectedRow(table_book);
-        book.Edit(row);
+        book_dialog.Edit(table_book.bootstrapTable('getSelections')[0]);
     });
     $('#button-query').click(function() {
     });

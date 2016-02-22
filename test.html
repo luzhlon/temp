@@ -10,6 +10,7 @@
 </head>
 <body>
 <div id="main">
+    <label id="output"></label>
     <p>aaaaaaa</p>
     <p>bbbbbbb</p>
     <input type="text" class="form-control" id="input">
@@ -17,8 +18,11 @@
 </div>
 <script>
     function onBtnClick() {
-        BootstrapDialog.alert('mmmmmmm');
+        $('#input').val("aaa");
     }
+    $('#input').attr('onpropertychange', function(a,b) {
+        alert(a + ":" +b);
+    });
 </script>
 </body>
 </html>

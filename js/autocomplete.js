@@ -10,9 +10,10 @@ function AutoCompleter(input, cfg) {
     var dropdown = $(target).next();
     var frame = $(target).parent();
     var self = this;
+    var width = target.css('width');
 
-    frame.width(target.outerWidth());
-    dropdown.width(target.outerWidth());
+    frame.css('width', width);
+    dropdown.css('width', width);
 
     target.bind('focus', function() {
         self.refreshOptions(true);

@@ -1,61 +1,77 @@
+/*
 function detailFormatter(index, row) {
     var html = [];
     $.each(row, function (key, value) {
         html.push('<p><b>' + key + ':</b> ' + value + '</p>');
     });
     return html.join('');
-}
+} // */
 
 function RequestData(method, callback) {
     Request('/output', { method: method }, callback);
 }
 
 var g_image = {
-    image_frame : $('#image-frame'),
-    image_input : $('[name="image"]'),
-    prog_frame : $('#image-progress'),
-    prog_label : $('#image-progress label'),
-    prog_bar : $('#image-progress-bar'),
+    $frame : $('#image-frame'),
+    $input : $('[name="image"]'),
+    $prog_frame : $('#image-progress'),
+    $prog_label : $('#image-progress label'),
+    $prog_bar : $('#image-progress-bar'),
+    Init : function() {
+        var self = this;
+        setUpload('#file_input', {
+            url : '/upload',
+            fields: { method : 'image' },
+            onchange: function(fileObj) {
+                self.showProgress();
+                return true;
+            },
+            onprogress: function(evt) {
+                if (evt.lengthComputable) {
+                    self.setProgressInfo(Math.round((evt.loaded / evt.total)  * 100));
+                }
+            },
+            onerror : function() {
+                ShowToolTip(self.$input, '上传失败。');
+            },
+            onuploaded: function() {
+                ShowToolTip(self.$input, '上传完成。');
+            },
+            onresponse : function(xhr) {
+                var r = JSON.parse(xhr.responseText);
+                if(r.success) {
+                    // 设置图片
+                    self.setImage(r.result);
+                    self.showImage();
+                }
+                console.log(xhr.responseText);
+            }
+        });
+    },
     // 设置图片
     setImage : function setImage(name) {
-        this.image_input.val(name);
-        this.image_frame.attr('src', '/upload/'+name);
+        this.$input.val(name);
+        this.$frame.attr('src', '/upload/'+name);
     },
     // 设置进度信息
     setProgressInfo : function (per) {
-        this.prog_label.text('已上传：' + per + '%');
-        this.prog_bar.attr('aria-valuenow', per);
+        this.$prog_label.text('已上传：' + per + '%');
+        this.$prog_bar.attr('aria-valuenow', per);
     },
     // 显示进度条
     showProgress : function () {
-        this.image_frame.css('display', 'none');
-        this.prog_frame.css('display', '');
+        this.$frame.css('display', 'none');
+        this.$prog_frame.css('display', '');
     },
     // 显示图片
     showImage : function () {
-        this.image_frame.css('display', '');
-        this.prog_frame.css('display', 'none');
+        this.$frame.css('display', '');
+        this.$prog_frame.css('display', 'none');
     },
 };
-var g_form = $('[name="prescription"]');
 var g_fields = [ 'pres_name', 'book', 'source', 'version', 'page', 'image', 'pres_type', 'make_method', 'use_method', 'use_level', 'use_note', 'modern_name', 'mcure_name', 'mas_disease', 'mas_symptom', 'aux_symptom', 'mas_medicine', 'aux_medicine', 'sex', 'age', 'pulse_cond', 'tongue_coat', 'tongue_nature', 'tongue_body', 'first_second', 'region', 'season', 'cure_method', 'disease_reason', 'disease_mechsm', 'constituent', 'else_medicine' ];
 var g_fieldNames = { pres_name : "方名", book : "著作", source : "出处", version : "版本", page : "页码", image : "原文图像", pres_type : "剂型", make_method : "剂型制法", use_method : "服法", use_level : "用量", use_note : "注意事项", modern_name : "现代病名", mcure_name : "主治中医病名", mas_disease : "主治证候", mas_symptom : "主治症状", aux_symptom : "兼症", mas_medicine : "君药", aux_medicine : "辅药", sex : "性别", age : "年龄", pulse_cond : "脉象", tongue_coat : "舌苔", tongue_nature : "舌质", tongue_body : "舌体", first_second : "初诊复诊", region : "地区", season : "季节", cure_method : "治法", disease_reason : "病因", disease_mechsm : "病机", constituent : "方剂组成", else_medicine : "加减法" };
 var g_prescript = {}; for(var i in g_fields) { var key = g_fields[i]; var val = $('[name="' + key + '"]'); if(!val) alert(key); g_prescript[key] = val; }
-
-// 获取录入数据
-function GetPresValue() {
-    var psv = {};
-    var ps = g_prescript;
-    for(var i in ps)
-        psv[i] = ps[i].val();
-    return psv;
-}
-// 设置录入数据
-function SetPresValue(psv) {
-    var ps = g_prescript;
-    for(var i in ps)
-        ps[i].val(psv[i]);
-}
 
 function SelectizeAll(selct) {
     function defHandler(ac) {
@@ -154,97 +170,90 @@ function CheckFields() {
     return true;
 }
 
-function SetPresID(id) {
-    _id = id;
-}
-function GetPresID() {
-    if(typeof _id == 'undefined')
-        _id = -1;
-    return _id;
-}
-
-function onSubmit() {
-    if(!CheckFields())
-        return false;
-
-    var psv = GetPresValue();
-    if(GetPresID() < 0) {
-        psv.method = 'insert_prescript';
-    } else {             // 更新数据，而不是录入
-        psv.method = 'update_prescript';
-    }
-    $.post('/input', psv,
-        function(reText) {
-            var json = JSON.parse(reText);
-            var name = psv.pres_name;
-            if(json.success) {
-                // 数据录入成功
-                ShowToolTip($('#button-submit'), name + ' 录入成功!');
-                g_prescript.pres_name.val('').focus();
-                //g_form.reset();
-            } else {
-                BootstrapDialog.show({
-                    title: '录入错误',
-                    message: json.reason
-                });
-            }
-        });
-    return false;
-}
-
-function getImageInput() {
-    return document.getElementsByName('image')[0];
-}
-
-function getImageElement() {
-    return document.getElementById('image');
-}
-
-function getImageOutput() {
-    return document.getElementById('output');
-}
-
-function initImageUpload() {
-    setUpload('#file_input', {
-        url : '/upload',
-        fields: { method : 'image' },
-        onchange: function(fileObj) {
-            g_image.showProgress();
-            return true;
-        },
-        onprogress: function(evt) {
-            if (evt.lengthComputable) {
-                g_image.setProgressInfo(Math.round((evt.loaded / evt.total)  * 100));
-            }
-        },
-        onerror : function() {
-            ShowToolTip(g_image.image_input, '上传失败。');
-        },
-        onuploaded: function() {
-            ShowToolTip(g_image.image_input, '上传完成。');
-        },
-        onresponse : function(xhr) {
-            var r = JSON.parse(xhr.responseText);
-            if(r.success) {
-                // 设置图片
-                g_image.setImage(r.result);
-                g_image.showImage();
-            }
-            console.log(xhr.responseText);
-        }
-    });
-}
-
 function onReset() {
     g_image.setImage('');
     return true;
 }
 
-SelectizeAll();
-var ps = g_prescript;
-LimitNumberInput(ps.page);
-FilterInput(ps.book, /[《》]/);
-FilterInput(ps.source, /[《》]/);
-FilterInput(ps.sex, /[\s]/);
-FilterInput(ps.firSec, /[\s]/);
-initImageUpload();
+var pres_table = $('#prescript-table');
+var pres_frame = {
+    $form: $('[name="prescription"]'),
+    $status: $('#label-status'),
+    edit_pres: null,
+    Status : function(s) { return this.$status.text(s); },
+    GetValues : function() {
+        var psv = {};
+        var ps = g_prescript;
+        for(var i in ps)
+            psv[i] = ps[i].val();
+        return psv;
+    },
+    SetValues : function(vals) {
+        var ps = g_prescript;
+        for(var i in ps)
+            ps[i].val(vals[i]);
+    },
+    Init : function() {
+        var self = this;
+        g_image.Init();
+        $('#button-submit').click(function() {
+            if(!CheckFields()) return false;
+            var psv = self.GetValues();
+            var method, suc_tip, fail_tip;
+            if(self.edit_pres) {
+                method = 'update';
+                psv.id = self.edit_pres.id;
+                suc_tip = psv.pres_name + '更新成功！';
+                fail_tip = psv.pres_name + '更新失败:';
+            } else {
+                method = 'insert';
+                suc_tip = psv.pres_name + '添加成功！';
+                fail_tip = psv.pres_name + '添加失败:';
+            }
+            $.post('/data?object=prescription&method=' + method, psv, function(reText) {
+                var json = JSON.parse(reText);
+                if(json.success) {
+                    // 数据录入成功
+                    ShowToolTip($('#button-submit'), suc_tip);
+                    g_prescript.pres_name.focus();
+                    pres_table.bootstrapTable('updateByUniqueId', psv.id, psv);
+                    //g_form.reset();
+                } else {
+                    BootstrapDialog.show({
+                        title: fail_tip,
+                        message: json.reason
+                    });
+                }
+            });
+            return false;
+        });
+        this.Status("新的方剂");
+    },
+    New : function() {
+        this.Status("新的方剂");
+        this.SetValues({});
+        this.edit_pres = null;
+        g_image.setImage('');
+        $('#pres-tab-ul a[href="#prescript-input"]').tab('show');
+    },
+    Edit : function(row) {
+        if(!row) return;
+        this.Status("正在编辑方剂 ID:" + row.id);
+        this.SetValues(row);
+        this.edit_pres = row;
+        g_image.setImage(row.image);
+        $('#pres-tab-ul a[href="#prescript-input"]').tab('show');
+    }
+};
+pres_table.on('dbl-click-row.bs.table', function(e, row, $element) {
+    pres_frame.Edit(row);
+});
+$('#button-new').click(function() {
+    pres_frame.New();
+});
+$('#button-edit').click(function() {
+    ShowToolTip($('#button-edit'), '双击方剂条目编辑');
+});
+$('#button-delete').click(function() {
+});
+

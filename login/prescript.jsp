@@ -5,80 +5,83 @@
   Time: 上午12:54
   To change this template use File | Settings | File Templates.
 --%>
+<link href="../css/autocomplete.css" rel="stylesheet">
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="panel-body" id="content">
-  <ul class="nav nav-tabs">
-    <li>
+  <ul class="nav nav-tabs" id="pres-tab-ul">
+    <li class="active">
       <a href="#prescript-table" data-toggle="tab">方剂管理</a>
     </li>
-    <li class="active">
-      <a href="#prescript-input" data-toggle="tab">方剂录入</a>
+    <li>
+      <a href="#prescript-input" data-toggle="tab">方剂编辑器</a>
     </li>
   </ul>
   <div class="tab-content">
     <!--Prescript table-->
-    <div id="prescript-table" class="tab-pane">
+    <div id="prescript-table" class="tab-pane in active">
         <div class="panel-body">
         <div id="prescript-toolbar">
             <div class="btn-group">
-                <button type="button" class="btn btn-info" onclick="onNewPrescript()">新建</button>
-                <button type="button" class="btn btn-warning" onclick="onEditPrescript()">编辑</button>
-                <!--button type="button" class="btn btn-danger" onclick="onDeletePrescript()">删除</button-->
-                <button type="button" class="btn btn-success" onclick="onQueryPrescript()">查询</button>
+                <button type="button" class="btn btn-info" id="button-new">新建</button>
+                <button type="button" class="btn btn-warning" id="button-edit">编辑</button>
+                <button type="button" class="btn btn-success" id="button-query">查询</button>
+                <button type="button" class="btn btn-danger" id="button-delete">删除</button>
             </div>
         </div>
-      <table id="table-book"
+        <table id="table-book"
              data-toggle="table"
-             data-height="500"
+             data-height="520"
              data-pagination="true"
              data-side-pagination="server"
              data-toolbar="#prescript-toolbar"
-             data-detail-view="true"
-             data-detail-formatter="detailFormatter"
+             data-unique-id="id"
+             data-click-to-select="true"
              data-show-columns="true"
              data-show-refresh="true"
              data-show-toggle="true"
              data-url="/data?method=query&object=prescription"
              data-resizable="true">
         <thead> <tr>
+            <th data-field="state" data-checkbox="true"></th>
             <th data-field="id" data-align="center">ID</th>
-            <th data-field="pres_name" data-width="50%">方名</th>
-            <th data-field="pres_type" data-width="40px">剂型</th>
-            <th data-field="book" data-width="80px">著作</th>
-            <th data-field="version" data-width="30px">版本</th>
-            <th data-field="page" data-align="center" data-width="30px">页码</th>
-            <th data-field="source" data-width="80px">出处</th>
-            <th data-field="make_method" data-width="100px">剂型制法</th>
-            <th data-field="use_method" data-width="100px">服法</th>
-            <th data-field="use_level" data-width="100px">用量</th>
-            <th data-field="use_note" data-width="100px">注意事项</th>
-            <th data-field="modern_name" data-width="80px">现代病名</th>
-            <th data-field="mcure_name" data-width="80px">主治中医病名</th>
-            <th data-field="mas_disease" data-width="">主治证候</th>
-            <th data-field="mas_symptom" data-width="">主治症状</th>
-            <th data-field="aux_symptom" data-width="">兼症</th>
-            <th data-field="mas_medicine" data-width="">君药</th>
-            <th data-field="aux_medicine" data-width="">臣药</th>
-            <th data-field="sex" data-width="">性别</th>
-            <th data-field="age" data-width="">年龄</th>
-            <th data-field="pulse_cond" data-width="">脉象</th>
-            <th data-field="tongue_coat" data-width="">舌苔</th>
-            <th data-field="tongue_nature" data-width="">舌质</th>
-            <th data-field="tongue_body" data-width="">舌体</th>
-            <th data-field="first_second" data-width="">初复诊</th>
-            <th data-field="region" data-width="">地域</th>
-            <th data-field="season" data-width="">季节</th>
-            <th data-field="cure_method" data-width="">治法</th>
-            <th data-field="disease_reason" data-width="">病因</th>
-            <th data-field="disease_mechsm" data-width="">病机</th>
-            <th data-field="constituent" data-width="">方剂组成</th>
-            <th data-field="else_medicine" data-width="">加减法</th>
+            <th data-field="pres_name" data-align="center">方名</th>
+            <th data-field="pres_type" data-align="center">剂型</th>
+            <th data-field="book" data-align="center">著作</th>
+            <th data-field="version" data-align="center">版本</th>
+            <th data-field="page" data-align="center">页码</th>
+            <th data-field="source">出处</th>
+            <th data-field="make_method">剂型制法</th>
+            <th data-field="use_method">服法</th>
+            <th data-field="use_level">用量</th>
+            <th data-field="use_note">注意事项</th>
+            <th data-field="image" data-visible="false">原文图像</th>
+            <th data-field="modern_name">现代病名</th>
+            <th data-field="mcure_name">主治中医病名</th>
+            <th data-field="mas_disease">主治证候</th>
+            <th data-field="mas_symptom">主治症状</th>
+            <th data-field="aux_symptom">兼症</th>
+            <th data-field="mas_medicine">君药</th>
+            <th data-field="aux_medicine">臣药</th>
+            <th data-field="sex" data-align="center">性别</th>
+            <th data-field="age" data-align="center">年龄</th>
+            <th data-field="pulse_cond" data-align="center">脉象</th>
+            <th data-field="tongue_coat" data-align="center">舌苔</th>
+            <th data-field="tongue_nature" data-align="center">舌质</th>
+            <th data-field="tongue_body" data-align="center">舌体</th>
+            <th data-field="first_second" data-align="center">初复诊</th>
+            <th data-field="region" data-align="center">地域</th>
+            <th data-field="season" data-align="center">季节</th>
+            <th data-field="cure_method">治法</th>
+            <th data-field="disease_reason">病因</th>
+            <th data-field="disease_mechsm">病机</th>
+            <th data-field="constituent">方剂组成</th>
+            <th data-field="else_medicine">加减法</th>
         </tr> </thead>
-      </table>
+        </table>
         </div>
     </div>
     <!--Prescript input-->
-    <div id="prescript-input" class="tab-pane in active">
+    <div id="prescript-input" class="tab-pane">
     <div class="container">
     <div class="row">
       <form name="prescription" method="post" action="/input"
@@ -116,7 +119,7 @@
         <div class="col-md-2">
             <label>现代病名：</label>
             <input name="modern_name" class="form-control" type="text"/>
-            <label>主治症候：</label>
+            <label>主治证候：</label>
             <input name="mas_disease" class="form-control" type="text"/>
             <label>主治症状：</label>
             <input name="mas_symptom" class="form-control" type="text"/>
@@ -179,13 +182,12 @@
         </div>
       </form>
     </div> <!--row-->
-    <div class="row" style="margin-top: 20px;"> <div class="form-group text-center">
+    <div class="row" style="margin-top: 20px;"> <div class="form-group">
+        <label id="label-status" style="color: red;" class="col-md-4"></label>
         <input id="button-submit" type="button" value="提交"
-               class="btn btn-success btn-large"
-               style="width: 100px;margin-right: 80px;" onclick="onSubmit()"/>
-        <input type="reset" value="重置"
-               style="width: 100px; margin-right: 80px;"
-               class="btn btn-danger btn-large"/>
+               class="btn btn-success btn-large col-md-1 col-md-offset-3"/>
+        <input id="button-reset" type="reset" value="重置"
+               class="btn btn-danger btn-large col-md-1 col-md-offset-1"/>
     </div></div>
     </div> <!--container-->
 </div> <!--tab-pane-->
@@ -200,19 +202,16 @@
         margin-left: -5px;
     }
 </style>
-<link href="../css/autocomplete.css" rel="stylesheet">
 <script src="../js/autocomplete.js"></script>
 <script src="../js/input.js"></script>
 <script>
-    /*
-    var pres_table = $('#prescript-table');
-    pres_table.on('click-row.bs.table', function(e, row, $element) {
-        if($element.hasClass('success'))
-            $element.removeClass('success');
-        else
-            $element.addClass('success');
-    });  // */
-    function onNewPrescript() {
-        console.log(pres_table.bootstrapTable('getSelections'));
-    }
+    SelectizeAll();
+    pres_frame.Init();
+    var ps = g_prescript;
+    LimitNumberInput(ps.page);
+    FilterInput(ps.book, /[《》]/);
+    FilterInput(ps.source, /[《》]/);
+    FilterInput(ps.sex, /[\s]/);
+    FilterInput(ps.firSec, /[\s]/);
 </script>
+

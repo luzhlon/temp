@@ -15,7 +15,7 @@
         <input name="excel-file" type="file" accept="application/vnd.ms-excel"/>
         <div id="output"></div>
     </div>
-    <div id="output-area">
+    <div id="output-area" class="panel-body">
         <ul id="output-list">
         </ul>
     </div>
