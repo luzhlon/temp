@@ -102,3 +102,8 @@ function TableSelectedRow($table) {
     var index = $table.find('tr.success').data('index');
     return $table.bootstrapTable('getData')[index];
 }
+function getIdSelections($table) {
+    return $.map($table.bootstrapTable('getSelections'), function (row) {
+        return row.id;
+    });
+}

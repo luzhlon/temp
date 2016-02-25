@@ -6,6 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <link href="../css/autocomplete.css" rel="stylesheet">
+<script src="../js/extensions/export/bootstrap-table-export.min.js"></script>
+<script src="../js/extensions/export/tableExport.js"></script>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="panel-body" id="content">
   <ul class="nav nav-tabs" id="pres-tab-ul">
@@ -28,22 +30,104 @@
                 <button type="button" class="btn btn-danger" id="button-delete">删除</button>
             </div>
         </div>
-        <table id="table-book"
+        <div class="modal fade" id="cond-modal" tabindex="-1" role="dialog"
+             aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close"
+                                data-dismiss="modal" aria-hidden="true">
+                            &times;
+                        </button>
+                        <h4 class="modal-title">
+                            编辑查询条件
+                        </h4>
+                    </div>
+                    <div class="modal-body">
+                    <div id="condition-toolbar" class="row">
+                        <div style="width: 10%; margin-left: 3%;">
+                            <select class="form-control"
+                                    id="cond-relate">
+                                <option value="且">且</option>
+                                <option value="或">或</option>
+                            </select>
+                        </div>
+                        <div style="width: 23%;">
+                            <input type="text" readonly="readonly"
+                                   class="form-control" placeholder="字段"
+                                   id="cond-field"/>
+                        </div>
+                        <div style="width: 15%;">
+                            <select class="form-control"
+                                    value="包含"
+                                    id="cond-method">
+                                <option value="相等">相等</option>
+                                <option value="包含">包含</option>
+                                <option value="形似">形似</option>
+                            </select>
+                        </div>
+                        <div style="width: 20%;">
+                            <input type="text"
+                                   class="form-control" placeholder="值"
+                                   id="cond-value"/>
+                        </div>
+                        <div style="width: 10%;">
+                            <button class="btn btn-info" type="button"
+                                    id="button-cond-add">添加</button>
+                        </div>
+                        <div style="width: 10%;">
+                            <button class="btn btn-danger" type="button"
+                                    id="button-cond-delete">删除</button>
+                        </div>
+                        <style>
+                            #condition-toolbar>div {
+                                display: inline-block;
+                            }
+                        </style>
+                    </div>
+                        <table id="table-condition"
+                               data-toggle="table"
+                               data-unique-id="id"
+                               data-show-header="false"
+                               data-click-to-select="true" >
+                            <thead> <tr>
+                                <th data-field="id" data-visible="false">ID</th>
+                                <th data-field="cond_relate" data-align="center">逻辑关系</th>
+                                <th data-field="cond_field" data-align="center">字段</th>
+                                <th data-field="cond_method" data-align="center">相等关系</th>
+                                <th data-field="cond_value" data-align="center">值</th>
+                                <th data-field="state" data-checkbox="true"></th>
+                            </tr></thead>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" id="modal-button-cancel"
+                                class="btn btn-default"
+                                data-dismiss="modal">取消</button>
+                        <button type="submit" id="modal-button-ok"
+                                class="btn btn-primary">确定</button>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal -->
+        </div>
+        <table id="table-prescript"
              data-toggle="table"
-             data-height="520"
+             data-height="700"
              data-pagination="true"
              data-side-pagination="server"
              data-toolbar="#prescript-toolbar"
              data-unique-id="id"
+             data-query-params="onPresTableQuery"
              data-click-to-select="true"
              data-show-columns="true"
              data-show-refresh="true"
              data-show-toggle="true"
+             data-show-export="true"
              data-url="/data?method=query&object=prescription"
              data-resizable="true">
         <thead> <tr>
             <th data-field="state" data-checkbox="true"></th>
-            <th data-field="id" data-align="center">ID</th>
+            <th data-field="id" data-visible="false" data-align="center">ID</th>
             <th data-field="pres_name" data-align="center">方名</th>
             <th data-field="pres_type" data-align="center">剂型</th>
             <th data-field="book" data-align="center">著作</th>
@@ -76,6 +160,8 @@
             <th data-field="disease_mechsm">病机</th>
             <th data-field="constituent">方剂组成</th>
             <th data-field="else_medicine">加减法</th>
+            <!--
+            -->
         </tr> </thead>
         </table>
         </div>
@@ -87,7 +173,7 @@
       <form name="prescription" method="post" action="/input"
             enctype="application/x-www-form-urlencoded"
             target="empty_frame"
-            onreset="return onReset()"
+            onreset="return onPresFrameReset()"
             onkeydown="if(event.keyCode==13)return false;">
 
         <div class="col-md-2">
@@ -180,6 +266,15 @@
             <label>加减法：</label>
             <textarea name="else_medicine" class="form-control" ></textarea>
         </div>
+          <style>
+              img#image-frame {
+                  width: 100%;
+                  height: 20%;
+              }
+              .container form label {
+                  margin-left: -5px;
+              }
+          </style>
       </form>
     </div> <!--row-->
     <div class="row" style="margin-top: 20px;"> <div class="form-group">
@@ -193,25 +288,12 @@
 </div> <!--tab-pane-->
 </div> <!--tab-content-->
 </div><!--panel-body-->
-<style>
-    img#image-frame {
-        width: 100%;
-        height: 20%;
-    }
-    .container form label {
-        margin-left: -5px;
-    }
-</style>
+
 <script src="../js/autocomplete.js"></script>
-<script src="../js/input.js"></script>
-<script>
-    SelectizeAll();
-    pres_frame.Init();
-    var ps = g_prescript;
-    LimitNumberInput(ps.page);
-    FilterInput(ps.book, /[《》]/);
-    FilterInput(ps.source, /[《》]/);
-    FilterInput(ps.sex, /[\s]/);
-    FilterInput(ps.firSec, /[\s]/);
-</script>
+<script src="../js/luzhlon.js"></script>
+<script src="../js/pres/prescript.js"></script>
+<script src="../js/pres/table.js"></script>
+<script src="../js/pres/image.js"></script>
+<script src="../js/pres/input.js"></script>
+<script src="../js/pres/condition.js"></script>
 

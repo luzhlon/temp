@@ -16,7 +16,7 @@
         <div id="output"></div>
     </div>
     <div id="output-area" class="panel-body">
-        <ul id="output-list">
+        <ul id="output-list" style="max-height: 400px; overflow-y: auto">
         </ul>
     </div>
 </div>
@@ -40,7 +40,7 @@
             ws.onmessage = function(msg) { putLog(msg.data); };
             // 请求导入
             _out.empty();
-            putLog("正在导入 " + fileInput.attr('value'));
+            putLog("正在导入 " + fileInput.val());
             Request('/import', {
                 method: 'excel',
                 wsid: webSocketId(),

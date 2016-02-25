@@ -90,8 +90,8 @@
         var id = row.id;
         //var row_data = table_book.bootstrapTable('getRowByUniqueId',row.id);
         Request('/data?method=update&object=book', {
-            'id': id,
-            [field]: row[field]
+            id : id,
+            field : row[field]
         }, function (json) {
             if (json.success) {
                 ShowToolTip(jqobj, "数据更新成功");
@@ -141,7 +141,7 @@
                     values, function(json) {
                         if (json.success) {
                             ShowToolTip($('#button-new'), suc_tip);
-                            table_book.bootstrapTable('updateByUniqueId', values.id, values);
+                            table_book.bootstrapTable('updateByUniqueId', { id:values.id, row:values});
                         }
                         else
                             ShowToolTip($('#button-new'), fail_tip + json.reason);

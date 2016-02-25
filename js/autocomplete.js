@@ -43,6 +43,7 @@ function AutoCompleter(input, cfg) {
 
     var config = {
         maxShowItems: 50,   // Option最大显示数目
+        separator: new RegExp('(.*[,\\s，、。或]+).*$'),
         onSelect : function(ctl, text) {
             ctl.target.val(text);
             ctl.showDropdown(false);
@@ -60,6 +61,11 @@ function AutoCompleter(input, cfg) {
 
     this.showDropdown(false);
 }
+
+AutoCompleter.prototype.addOptions = function(opts) {
+    for(var i = 0; i < opts.length; i++)
+        this.addOption(opts[i]);
+};
 // 添加 Option
 AutoCompleter.prototype.addOption = function(option) {
     if(this.option_table[option]) { return; }
@@ -178,7 +184,7 @@ AutoCompleter.prototype.select = function() {
     var index = this.option_table[text];
 
     if(text && index) {
-        var re = new RegExp('(.*[,\\s，、。或]+).*$');
+        var re = this.config.separator;
         var ma = re.exec(this.target.val());
 
         if(ma) {

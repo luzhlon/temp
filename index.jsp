@@ -2,9 +2,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%-- 检测是否已经登录 --%>
 <%@ page import="com.tool.User"%>
-
+<!doctype html>
 <html>
   <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,Chrome=1" />
     <title>登录</title>
     <link rel="stylesheet" href="css/bootstrap.min.css">
     <link rel="stylesheet" href="css/font-awesome.min.css">
