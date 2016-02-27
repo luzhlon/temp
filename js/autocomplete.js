@@ -37,20 +37,16 @@ function AutoCompleter(input, cfg) {
         }
         return false;
     }).bind('input', function(event) {
-    //}).bind('keyup', function() {
         self.onchange(this);
     });
 
     var config = {
-        maxShowItems: 50,   // Option最大显示数目
+        max_show_items: 50,   // Option最大显示数目
         separator: new RegExp('(.*[,\\s，、。或]+).*$'),
-        onSelect : function(ctl, text) {
-            ctl.target.val(text);
-            ctl.showDropdown(false);
-        }
+        onSelect : function(ctl, text) { }
     };
-    $.extend(config, cfg);
 
+    $.extend(config, cfg);
     this.target = target;     // 目标控件
     this.dropdown = dropdown; // 下拉框
     this.frame = frame;       // 包裹控件的边框
@@ -107,7 +103,7 @@ AutoCompleter.prototype.refreshOptions = function(show) {
         if(!option) { continue; }
 
         // 超过了最大显示数目
-        if(n++ > this.config.maxShowItems) { break; }
+        if(n++ > this.config.max_show_items) { break; }
 
         this.dropdown.append(
             $('<div class="ac-option-item"></div>')

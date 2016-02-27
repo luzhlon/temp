@@ -15,8 +15,12 @@
     <p>bbbbbbb</p>
     <input type="text" class="form-control" id="input">
     <input type="button" class="btn btn-default" onclick="onBtnClick()">
+    <a href="javascript:void(0);" id="test-link">aaa</a>
 </div>
 <script>
+    $('#test-link').click(function() {
+        alert('ddddd');
+    });
     function onBtnClick() {
         $('#input').val("aaa");
     }

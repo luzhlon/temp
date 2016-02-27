@@ -93,6 +93,7 @@ function onPresFrameReset() {
 }
 
 pres_frame = {
+    $table: $('#prescript-table'),
     $form: $('[name="prescription"]'),
     $status: $('#label-status'),
     edit_pres: null,
@@ -128,40 +129,43 @@ pres_frame = {
         }
         return true;
     },
+    Submit: function() {
+        if(!this.CheckFields()) return false;
+        var psv = this.GetValues();
+        var method, suc_tip, fail_tip;
+        if(this.edit_pres) {
+            method = 'update';
+            psv.id = this.edit_pres.id;
+            suc_tip = psv.pres_name + '更新成功！';
+            fail_tip = psv.pres_name + '更新失败:';
+        } else {
+            method = 'insert';
+            suc_tip = psv.pres_name + '添加成功！';
+            fail_tip = psv.pres_name + '添加失败:';
+        }
+        var self = this;
+        Request('/data?object=prescription&method=' + method, psv, function(json) {
+            if(json.success) {
+                // 数据录入成功
+                ShowToolTip($('#button-submit'), suc_tip);
+                g_prescript.pres_name.focus();
+                self.$table
+                    .bootstrapTable
+                    ('updateByUniqueId', {id:psv.id, row:psv});
+                //g_form.reset();
+            } else {
+                BootstrapDialog.show({
+                    title: fail_tip,
+                    message: json.reason
+                });
+            }
+        });
+        return false;
+    },
     Init : function() {
         var self = this;
         g_image_frame.Init();
-        $('#button-submit').click(function() {
-            if(!self.CheckFields()) return false;
-            var psv = self.GetValues();
-            var method, suc_tip, fail_tip;
-            if(self.edit_pres) {
-                method = 'update';
-                psv.id = self.edit_pres.id;
-                suc_tip = psv.pres_name + '更新成功！';
-                fail_tip = psv.pres_name + '更新失败:';
-            } else {
-                method = 'insert';
-                suc_tip = psv.pres_name + '添加成功！';
-                fail_tip = psv.pres_name + '添加失败:';
-            }
-            $.post('/data?object=prescription&method=' + method, psv, function(reText) {
-                var json = JSON.parse(reText);
-                if(json.success) {
-                    // 数据录入成功
-                    ShowToolTip($('#button-submit'), suc_tip);
-                    g_prescript.pres_name.focus();
-                    pres_table.bootstrapTable('updateByUniqueId', psv.id, psv);
-                    //g_form.reset();
-                } else {
-                    BootstrapDialog.show({
-                        title: fail_tip,
-                        message: json.reason
-                    });
-                }
-            });
-            return false;
-        });
+        $('#button-submit').click(function() { self.Submit(); });
         this.Status("新的方剂");
         SelectizeAll();
         var ps = g_prescript;
@@ -190,7 +194,7 @@ pres_frame = {
         this.ShowInput();
     },
     Delete: function(ids) {
-        pres_table.bootstrapTable('remove', {field: 'id', values:ids});
+        this.$table.bootstrapTable('remove', {field: 'id', values:ids});
     }
 };
 

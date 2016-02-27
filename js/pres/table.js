@@ -6,7 +6,9 @@ pres_table.on('dbl-click-row.bs.table', function(e, row, $element) {
 });
 // On refresh or query
 function onPresTableQuery(params) {
-    //alert(JSON.stringify(params));
+    var cond = cond_dialog.GetCondJSON();
+    if(cond)
+        params.condition = cond;
     return params;
 }
 

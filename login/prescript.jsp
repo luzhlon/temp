@@ -53,15 +53,14 @@
                             </select>
                         </div>
                         <div style="width: 23%;">
-                            <input type="text" readonly="readonly"
-                                   class="form-control" placeholder="字段"
-                                   id="cond-field"/>
+                            <select class="form-control" id="cond-field">
+                            </select>
                         </div>
                         <div style="width: 15%;">
                             <select class="form-control"
                                     value="包含"
                                     id="cond-method">
-                                <option value="相等">相等</option>
+                                <option value="等于">等于</option>
                                 <option value="包含">包含</option>
                                 <option value="形似">形似</option>
                             </select>
@@ -166,7 +165,49 @@
         </table>
         </div>
     </div>
-    <!--Prescript input-->
+
+      <div class="modal fade" id="replace-modal" tabindex="-1" role="dialog"
+           aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+              <div class="modal-content">
+                  <div class="modal-header">
+                      <button type="button" class="close"
+                              data-dismiss="modal" aria-hidden="true">
+                          &times;
+                      </button>
+                      <h4 class="modal-title">
+                          检测到不规范药名
+                      </h4>
+                  </div>
+                  <div class="modal-body">
+                      <table id="table-replace"
+                             data-toggle="table"
+                             data-unique-id="id"
+                             data-click-to-select="true">
+                          <thead>
+                          <tr>
+                              <th data-field="id" data-visible="false">ID</th>
+                              <th data-field="field" data-align="center">字段</th>
+                              <th data-field="old" data-align="center">旧</th>
+                              <th data-field="new" data-align="center">新</th>
+                              <th data-field="state" data-checkbox="true"></th>
+                          </tr>
+                          </thead>
+                      </table>
+                  </div>
+                  <div class="modal-footer">
+                      <button type="button" id="modal-button-rep-cancel"
+                              class="btn btn-default"
+                              data-dismiss="modal">取消</button>
+                      <button type="button" id="modal-button-replace"
+                              class="btn btn-info">替换</button>
+                      <button type="submit" id="modal-button-repsubmit"
+                              class="btn btn-primary">替换并提交</button>
+                  </div>
+              </div><!-- /.modal-content -->
+          </div><!-- /.modal -->
+      </div>
+      <!--Prescript input-->
     <div id="prescript-input" class="tab-pane">
     <div class="container">
     <div class="row">
@@ -279,8 +320,12 @@
     </div> <!--row-->
     <div class="row" style="margin-top: 20px;"> <div class="form-group">
         <label id="label-status" style="color: red;" class="col-md-4"></label>
+        <span id="span-show-replace"
+              class="col-md-4">
+            <a href="javascript:void(0)" id="link-replace">检查规范药名</a>
+        </span>
         <input id="button-submit" type="button" value="提交"
-               class="btn btn-success btn-large col-md-1 col-md-offset-3"/>
+               class="btn btn-success btn-large col-md-1"/>
         <input id="button-reset" type="reset" value="重置"
                class="btn btn-danger btn-large col-md-1 col-md-offset-1"/>
     </div></div>
@@ -296,4 +341,5 @@
 <script src="../js/pres/image.js"></script>
 <script src="../js/pres/input.js"></script>
 <script src="../js/pres/condition.js"></script>
+<script src="../js/pres/replace.js"></script>
 
