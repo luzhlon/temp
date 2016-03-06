@@ -48,8 +48,8 @@
                         <div style="width: 10%; margin-left: 3%;">
                             <select class="form-control"
                                     id="cond-relate">
-                                <option value="且">且</option>
-                                <option value="或">或</option>
+                                <option value="AND">且</option>
+                                <option value="OR">或</option>
                             </select>
                         </div>
                         <div style="width: 23%;">
@@ -58,11 +58,7 @@
                         </div>
                         <div style="width: 15%;">
                             <select class="form-control"
-                                    value="包含"
                                     id="cond-method">
-                                <option value="等于">等于</option>
-                                <option value="包含">包含</option>
-                                <option value="形似">形似</option>
                             </select>
                         </div>
                         <div style="width: 20%;">
@@ -91,9 +87,12 @@
                                data-click-to-select="true" >
                             <thead> <tr>
                                 <th data-field="id" data-visible="false">ID</th>
-                                <th data-field="cond_relate" data-align="center">逻辑关系</th>
-                                <th data-field="cond_field" data-align="center">字段</th>
-                                <th data-field="cond_method" data-align="center">相等关系</th>
+                                <th data-field="cond_relate" data-visible="false">Relate</th>
+                                <th data-field="show_relate" data-align="center">逻辑关系</th>
+                                <th data-field="cond_field" data-visible="false">Field</th>
+                                <th data-field="show_field" data-align="center">字段</th>
+                                <th data-field="cond_method" data-visible="false">Method</th>
+                                <th data-field="show_method" data-align="center">相等性</th>
                                 <th data-field="cond_value" data-align="center">值</th>
                                 <th data-field="state" data-checkbox="true"></th>
                             </tr></thead>
@@ -159,8 +158,6 @@
             <th data-field="disease_mechsm">病机</th>
             <th data-field="constituent">方剂组成</th>
             <th data-field="else_medicine">加减法</th>
-            <!--
-            -->
         </tr> </thead>
         </table>
         </div>
@@ -260,11 +257,21 @@
 
         <div class="col-md-1">
             <label>性别：</label>
-            <input name="sex" class="form-control" type="text"/>
+            <%--<input name="sex" class="form-control" type="text"/>--%>
+            <select name="sex" class="form-control">
+                <option value="">&nbsp;</option>
+                <option value="男">男</option>
+                <option value="女">女</option>
+            </select>
             <label>年龄：</label>
             <input name="age" class="form-control" type="text" />
             <label>初复诊：</label>
-            <input name="first_second" class="form-control" type="text"/>
+            <%--<input name="first_second" class="form-control" type="text"/>--%>
+            <select name="first_second" class="form-control">
+                <option value="">&nbsp;</option>
+                <option value="初诊">初诊</option>
+                <option value="复诊">复诊</option>
+            </select>
             <label>地域：</label>
             <input name="region" class="form-control" type="text" />
             <label>季节：</label>

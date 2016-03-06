@@ -16,17 +16,13 @@ function SelectizeAll(selct) {
         return function(rst) {
             if(!rst.success) return;
             if(rst.result.length <= 0) return;
-            for(var i in rst.result) {
-                ac.addOption(rst.result[i]);
-            }
+            ac.addOptions(rst.result);
             ac.refreshOptions(false);
         };
     }
 
     var ps = g_prescript;
 
-    var firSec = new AutoCompleter(ps.first_second); firSec.addOption('初诊'); firSec.addOption('复诊');
-    var sex = new AutoCompleter(ps.sex); sex.addOption('男'); sex.addOption('女');
     var season = new AutoCompleter(ps.season);
     var region = new AutoCompleter(ps.region);
 
@@ -49,42 +45,18 @@ function SelectizeAll(selct) {
     RequestData("type", defHandler(type));
     RequestData("source", defHandler(source));
     RequestData("book", defHandler(book));
-
     RequestData("disease", defHandler(mdisease));
     RequestData("disease_name", defHandler(mname));
     RequestData("pulse_cond", defHandler(pcond));
     RequestData("season", defHandler(season));
-
     RequestData("region", defHandler(region));
-    RequestData("tongue_coat", defHandler(tcoat));
-    RequestData("tongue_nature", defHandler(tnature));
-    RequestData("tongue_body", defHandler(tbody));
-    // */
-    RequestData("medicine", function(rst) {
-        if(rst.result.length <= 0) {
-            return;
-        }
-        for(var i in rst.result) {
-            var option = rst.result[i];
-            mmedicine.addOption(option);
-            amedicine.addOption(option);
-        }
-        mmedicine.refreshOptions(false);
-        amedicine.refreshOptions(false);
-    });
-
-    RequestData("symptom", function(rst) {
-        if(rst.result.length <= 0) {
-            return;
-        }
-        for(var i in rst.result) {
-            var option = rst.result[i];
-            msymptom.addOption(option);
-            asymptom.addOption(option);
-        }
-        msymptom.refreshOptions(false);
-        asymptom.refreshOptions(false);
-    });
+    RequestData("tongue", defHandler(tcoat));
+    tnature.setOptionTable(tcoat.getOptionTable());
+    tbody.setOptionTable(tcoat.getOptionTable());
+    RequestData("symptom", defHandler(msymptom));
+    asymptom.setOptionTable(msymptom.getOptionTable());
+    RequestData("medicine", defHandler(mmedicine));
+    amedicine.setOptionTable(mmedicine.getOptionTable());
 }
 
 function onPresFrameReset() {
@@ -149,9 +121,8 @@ pres_frame = {
                 // 数据录入成功
                 ShowToolTip($('#button-submit'), suc_tip);
                 g_prescript.pres_name.focus();
-                self.$table
-                    .bootstrapTable
-                    ('updateByUniqueId', {id:psv.id, row:psv});
+                self.$table.bootstrapTable(
+                    'updateByUniqueId', {id:psv.id, row:psv});
                 //g_form.reset();
             } else {
                 BootstrapDialog.show({

@@ -74,7 +74,7 @@
             </div>
         </div>
         <div class="form-group">
-            <button type="submit" class="templatemo-blue-button width-100">Login</button>
+            <button type="submit" class="templatemo-blue-button width-100">登录</button>
         </div>
     </form>
 </div>

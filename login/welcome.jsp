@@ -10,4 +10,5 @@
     <h3 class="panel-title">系统首页</h3>
 </div>
 <div class="panel-body">
+    <jsp:include page="help.jsp"></jsp:include>
 </div>

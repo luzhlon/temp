@@ -22,8 +22,6 @@
   <script src="../js/bootstrap-dialog.min.js"></script>
   <script src="../js/extensions/resizable/bootstrap-table-resizable.min.js"></script>
   <script src="../js/extensions/resizable/colResizable.js"></script>
-  <script src="../js/extensions/editable/bootstrap-table-editable.min.js"></script>
-  <script src="../js/extensions/editable/editable.js"></script>
   <script src="../js/luzhlon.js"></script>
 </head>
 <body>

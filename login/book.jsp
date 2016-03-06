@@ -37,9 +37,9 @@
         <tr>
             <th data-field="state" data-checkbox="true"></th>
             <th data-field="id" data-align="center">ID</th>
-            <th data-field="name" data-align="center" data-editable="true">著作</th>
-            <th data-field="author" data-align="center" data-editable="true">作者</th>
-            <th data-field="dynasty" data-align="center" data-editable="true">朝代</th>
+            <th data-field="name" data-align="center">著作</th>
+            <th data-field="author" data-align="center">作者</th>
+            <th data-field="dynasty" data-align="center">朝代</th>
         </tr>
         </thead>
     </table>

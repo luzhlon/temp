@@ -1,5 +1,5 @@
 /**
- * Created by john on 16-1-19.
+ * Created by luzhlon on 16-1-19.
  */
 
 function AutoCompleter(input, cfg) {
@@ -41,9 +41,12 @@ function AutoCompleter(input, cfg) {
     });
 
     var config = {
-        max_show_items: 50,   // Option最大显示数目
-        separator: new RegExp('(.*[,\\s，、。或]+).*$'),
-        onSelect : function(ctl, text) { }
+        max_show: 50,   // 最多显示Option数目
+        separator: '[\\s,，、。或]+', // 分隔符
+        url : null,  // 获取数据的url(post)
+        get_once : true, // 是否一次性获取全部数据，若为false则不传递word参数
+        p_word : 'word', // 传递给服务器的word参数
+        onSelect : null
     };
 
     $.extend(config, cfg);
@@ -51,8 +54,7 @@ function AutoCompleter(input, cfg) {
     this.dropdown = dropdown; // 下拉框
     this.frame = frame;       // 包裹控件的边框
     this.config = config;     // 配置
-    this.option_table = {};   // 下拉框关联数组
-    this.option_count = 0;    // option个数
+    this.option_table = [];   // 下拉框列表
     this.cur_option = null;   // 当前选中的选项
 
     this.showDropdown(false);
@@ -64,10 +66,10 @@ AutoCompleter.prototype.addOptions = function(opts) {
 };
 // 添加 Option
 AutoCompleter.prototype.addOption = function(option) {
-    if(this.option_table[option]) { return; }
-    this.option_count++;
-    this.option_table[option] = this.option_count;
-    this.option_table[this.option_count] = option;
+    if(this.option_table[option] != undefined)
+        return;
+    this.option_table[this.option_table.length] = option;
+    this.option_table[option] = this.option_table.length;
 };
 // 删除Option
 AutoCompleter.prototype.delOption = function(option) {
@@ -94,17 +96,14 @@ AutoCompleter.prototype.showDropdown = function(show) {
 AutoCompleter.prototype.refreshOptions = function(show) {
     var self = this;
     this.dropdown.empty();
-    var to_show = this.option_table;
-    if(typeof show == 'object') {
-        to_show = show;
-    }
-    for(var i = 1, n = 1; i <= this.option_count; i++) {
+    var to_show = show instanceof Array ?
+                  show : this.option_table;
+    for(var i = 0, n = 0; i < to_show.length; i++) {
         var option = to_show[i];
-        if(!option) { continue; }
-
+        if(!option) continue;
         // 超过了最大显示数目
-        if(n++ > this.config.max_show_items) { break; }
-
+        if(n++ > this.config.max_show)
+            break;
         this.dropdown.append(
             $('<div class="ac-option-item"></div>')
                 .text(to_show[i])
@@ -121,9 +120,7 @@ AutoCompleter.prototype.refreshOptions = function(show) {
                     }
                 }));
     }
-    if(show) {
-        this.showDropdown();
-    }
+    if(show) this.showDropdown();
     // 选中第一个
     this.cur_option = this.dropdown
                           .children()
@@ -133,9 +130,9 @@ AutoCompleter.prototype.refreshOptions = function(show) {
 // 向上激活
 AutoCompleter.prototype.upActiveOption = function() {
     var to_selct = null;
-    if(this.cur_option == null) {    // 如果当前没有选中的，选最后一个子元素
+    if(this.cur_option == null)    // 如果当前没有选中的，选最后一个子元素
         to_selct = this.dropdown.children().last();
-    } else {
+    else {
         var up = this.cur_option.prev();
         if(up.length != 0) {
             this.cur_option.attr('class', 'ac-option-item');
@@ -167,40 +164,27 @@ AutoCompleter.prototype.downActiveOption = function() {
 // Dropdown是否正在显示
 AutoCompleter.prototype.isShown = function() {
     var show = this.dropdown.css('display');
-    if(show == 'none') {
-        return false;
-    } else {
-        return true;
-    }
+    return !(show == 'none');
 };
 // 选择Option的动作
 AutoCompleter.prototype.select = function() {
-    //var callback = this.config.onSelect;
+    var callback = this.config.onSelect;
     var text = this.cur_option.text();
     var index = this.option_table[text];
 
     if(text && index) {
-        var re = this.config.separator;
+        var sep_reg = '(.*' + this.config.separator + ').*$';
+        var re = new RegExp(sep_reg);
         var ma = re.exec(this.target.val());
 
-        if(ma) {
-            this.target.val(ma[1] + text);
-        } else {
-            this.target.val(text);
-        }
-        //callback(this,text);
-        // 与第一个交换位置
-        var first = this.option_table[1];
-        var selet = this.option_table[index];
-        this.option_table[index] = first;
-        this.option_table[first] = index;
-        this.option_table[1] = selet;
-        this.option_table[selet] = 1;
+        if(ma) this.target.val(ma[1] + text);
+        else   this.target.val(text);
+        if(callback) callback(this,text);
     }
 };
 // 分割
 AutoCompleter.prototype.getSplit = function() {
-    return this.target.val().split(/[,\s，、。或]+/);
+    return this.target.val().split(new RegExp(this.config.separator));
 };
 // 失去焦点时
 AutoCompleter.prototype.onblur = function() {
@@ -211,7 +195,7 @@ AutoCompleter.prototype.onblur = function() {
 };
 // 文本框内容改变时
 AutoCompleter.prototype.onchange = function(input) {
-    var to_show = {};
+    var to_show = [];
     var ss = this.getSplit();
     var key = input.value;
 
@@ -220,14 +204,21 @@ AutoCompleter.prototype.onchange = function(input) {
         if(ss.length > 1) // 添加倒数第二个到选项中
             this.addOption(ss[ss.length - 2]);
     }
-    if(key == '') { to_show = this.option_table; }
+    if(key == '')
+        to_show = this.option_table;
     else {
-        for(var i = 1; i <= this.option_count; i++) {
+        for(var i = 0; i < this.option_table.length; i++) {
+            var str = this.option_table[i];
             // 如果有匹配，加入加入到to_show列表里
-            if(this.option_table[i].indexOf(key) >= 0) {
+            if(str && str.indexOf(key) >= 0)
                 to_show[i] = this.option_table[i];
-            }
         }
     }
     this.refreshOptions(to_show);
+};
+AutoCompleter.prototype.setOptionTable = function(table) {
+    this.option_table = table;
+};
+AutoCompleter.prototype.getOptionTable = function(table) {
+    return this.option_table;
 };
