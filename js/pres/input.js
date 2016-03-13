@@ -163,9 +163,6 @@ pres_frame = {
         this.edit_pres = row;
         g_image_frame.setImage(row.image);
         this.ShowInput();
-    },
-    Delete: function(ids) {
-        this.$table.bootstrapTable('remove', {field: 'id', values:ids});
     }
 };
 

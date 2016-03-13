@@ -11,15 +11,15 @@ function onPresTableQuery(params) {
         params.condition = cond;
     return params;
 }
-
+// ’新建‘按钮点击事件
 $('#button-new').click(function() {
     pres_frame.New();
 });
-
+// ’编辑‘按钮点击事件
 $('#button-edit').click(function() {
     ShowToolTip($('#button-edit'), '双击方剂条目编辑');
 });
-
+// ’删除‘按钮点击事件
 $('#button-delete').click(function() {
     var ids = getIdSelections(pres_table);
 
@@ -27,13 +27,13 @@ $('#button-delete').click(function() {
         { id: ids.join(',') }, function(json) {
             if(json.success) {
                 ShowToolTip($('#button-delete'), '删除方剂成功！');
-                pres_frame.Delete(ids);
+                pres_table.bootstrapTable('remove', {field: 'id', values:ids});
             }
             else
                 ShowToolTip($('#button-delete'), '删除方剂失败：' + json.reason);
         });
 });
-
+// ’查询‘按钮点击事件
 $('#button-query').click(function() {
     cond_dialog.Show();
 });

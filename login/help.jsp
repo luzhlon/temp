@@ -136,3 +136,11 @@
   <img src="import.png" alt="import">
   <br> 如图所示，选择文件（xls格式）即可向系统导入已经录入的excel方剂文档。
 </p>
+<style>
+  img {
+    width: 100%;
+  }
+  h1 {
+    text-align: center;
+  }
+</style>
