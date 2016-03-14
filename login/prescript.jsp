@@ -211,7 +211,6 @@
       <form name="prescription" method="post" action="/input"
             enctype="application/x-www-form-urlencoded"
             target="empty_frame"
-            onreset="return onPresFrameReset()"
             onkeydown="if(event.keyCode==13)return false;">
 
         <div class="col-md-2">

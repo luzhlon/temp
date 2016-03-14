@@ -59,11 +59,6 @@ function SelectizeAll(selct) {
     amedicine.setOptionTable(mmedicine.getOptionTable());
 }
 
-function onPresFrameReset() {
-    g_image_frame.setImage('');
-    return true;
-}
-
 pres_frame = {
     $table: $('#prescript-table'),
     $form: $('[name="prescription"]'),
@@ -82,6 +77,7 @@ pres_frame = {
         for(var i in ps)
             ps[i].val(vals[i]);
     },
+    // 检查必填字段
     CheckFields : function() {
         var ps = g_prescript;
         var tip_text = {
@@ -101,6 +97,12 @@ pres_frame = {
         }
         return true;
     },
+    // 重置所有输入
+    Reset : function () {
+        this.SetValues({});
+        g_image_frame.setImage('');
+    },
+    // 提交录入的数据
     Submit: function() {
         if(!this.CheckFields()) return false;
         var psv = this.GetValues();
@@ -133,10 +135,12 @@ pres_frame = {
         });
         return false;
     },
+    // 初始化
     Init : function() {
         var self = this;
         g_image_frame.Init();
         $('#button-submit').click(function() { self.Submit(); });
+        $('#button-reset').click(function() { self.Reset(); });
         this.Status("新的方剂");
         SelectizeAll();
         var ps = g_prescript;
@@ -146,16 +150,19 @@ pres_frame = {
         FilterInput(ps.sex, /[\s]/);
         FilterInput(ps.first_second, /[\s]/);
     },
+    // 显示录入标签页
     ShowInput : function () {
         $('#pres-tab-ul a[href="#prescript-input"]').tab('show');
     },
+    // 新建方剂
     New : function() {
         this.Status("新的方剂");
-        this.SetValues({});
+        this.Reset();
         this.edit_pres = null;
         g_image_frame.setImage('');
         this.ShowInput();
     },
+    // 编辑方剂
     Edit : function(row) {
         if(!row) return;
         this.Status("正在编辑方剂 ID:" + row.id);

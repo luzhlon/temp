@@ -55,5 +55,5 @@ g_image_frame = {
     showImage : function () {
         this.$frame.css('display', '');
         this.$prog_frame.css('display', 'none');
-    },
+    }
 };

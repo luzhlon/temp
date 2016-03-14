@@ -16,7 +16,7 @@
             <button type="button" class="btn btn-info" id="button-new">新建</button>
             <button type="button" class="btn btn-warning" id="button-edit">编辑</button>
             <!--button type="button" class="btn btn-danger" onclick="onDelete()">删除</button-->
-            <button type="button" class="btn btn-success" id="button-query">查询</button>
+            <!--button type="button" class="btn btn-success" id="button-query">查询</button-->
         </div>
     </div>
     <table id="table-book"
