@@ -1,10 +1,11 @@
-
+// 图片框架（和图片上传、显示有关的数据操作）
 g_image_frame = {
     $frame : $('#image-frame'),
     $input : $('[name="image"]'),
     $prog_frame : $('#image-progress'),
     $prog_label : $('#image-progress label'),
     $prog_bar : $('#image-progress-bar'),
+    // 初始化
     Init : function() {
         var self = this;
         setUpload('#file_input', {

@@ -1,10 +1,10 @@
-
+// 表格的jquery对象
 pres_table = $('#table-prescript');
-// DoubleClick table item
+// 双击表格条目时进入编辑模式
 pres_table.on('dbl-click-row.bs.table', function(e, row, $element) {
     pres_frame.Edit(row);
 });
-// On refresh or query
+// 表格刷新时调用
 function onPresTableQuery(params) {
     var cond = cond_dialog.GetCondJSON();
     if(cond)
@@ -38,3 +38,10 @@ $('#button-query').click(function() {
     cond_dialog.Show();
 });
 
+// 处理表格不能调节的现象
+function UpTableWidth($table) {
+    window.setTimeout(function() {
+        $($table).wrap('<div style="width: 4000px; overflow: hidden"></div>');
+    }, 100);
+}
+UpTableWidth('#table-prescript');

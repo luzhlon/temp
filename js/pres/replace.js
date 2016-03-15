@@ -1,8 +1,9 @@
-
+// 中药药名规范对话框
 rep_dialog = {
     $modal : $('#replace-modal'),
     $table : $('#table-replace'),
     result: {},   // Result from server
+    // 初始化
     Init: function() {
         var self = this;
         $('#modal-button-rep-cancel').click(function() {
@@ -21,6 +22,7 @@ rep_dialog = {
             self.CheckReplace();
         });
     },
+    // 替换所选的不规范的药名
     Replace: function() {
         var data = this.$table.bootstrapTable('getSelections');
         for(var i = 0; i < data.length; i++) {
@@ -33,6 +35,7 @@ rep_dialog = {
             }
         }
     },
+    // 获取旧的输入（不规范的药名）
     GetOldValues: function() {
         return {
             constituent: g_prescript.constituent.val(),
@@ -41,6 +44,7 @@ rep_dialog = {
             aux_medicine: g_prescript.aux_medicine.val()
         };
     },
+    // 刷新列表
     RefreshTable: function() {
         this.$table.bootstrapTable('removeAll');
         var rows = this.result.rows;
@@ -54,11 +58,13 @@ rep_dialog = {
             this.$table.bootstrapTable('append', row);
         }
     },
+    // 显示对话框
     Show: function() {
         this.RefreshTable();
         this.$modal.modal('show');
         this.$table.bootstrapTable('checkAll');
     },
+    // 检查是否需要规范中药名
     CheckReplace: function() {
         var self = this;
         Request('/replace', this.GetOldValues(), function(json) {

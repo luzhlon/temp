@@ -1,3 +1,4 @@
+// 获得一个XMLHttpRequest 对象
 function getXHR() {
     /*
     if(typeof _xmlhttp != 'undefined') {
@@ -18,6 +19,7 @@ function getXHR() {
     }
     return _xmlhttp;
 }
+// 限制输入框所能输入的字符；filter为和要过滤的字符匹配的正则表达式
 function FilterInput(input, filter) {
     var ctl = $(input);
     ctl.bind('input', function() {
@@ -102,6 +104,7 @@ function TableSelectedRow($table) {
     var index = $table.find('tr.success').data('index');
     return $table.bootstrapTable('getData')[index];
 }
+// 获取bootstrap表格中选择的id
 function getIdSelections($table) {
     return $.map($table.bootstrapTable('getSelections'), function (row) {
         return row.id;

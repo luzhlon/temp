@@ -20,7 +20,7 @@
   <script src="../js/bootstrap.min.js"></script>
   <script src="../js/bootstrap-table.min.js"></script>
   <script src="../js/bootstrap-dialog.min.js"></script>
-  <script src="../js/extensions/resizable/bootstrap-table-resizable.min.js"></script>
+  <script src="../js/extensions/resizable/bootstrap-table-resizable.js"></script>
   <script src="../js/extensions/resizable/colResizable.js"></script>
   <script src="../js/luzhlon.js"></script>
 </head>
@@ -45,7 +45,6 @@
         <li><a id="prescript" href="main.jsp?page=prescript"><i class="fa fa-bar-chart fa-fw"></i>方剂</a></li>
         <li><a id="book" href="main.jsp?page=book"><i class="fa fa-bar-chart fa-fw"></i>书籍</a></li>
         <li><a id="import" href="main.jsp?page=import"><i class="fa fa-database fa-fw"></i>导入</a></li>
-        <%--<li><a href="help.html"><i class="fa fa-map-marker fa-fw"></i>帮助</a></li>--%>
       </ul>
     </nav>
   </div>

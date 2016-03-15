@@ -1,17 +1,4 @@
-/*
- function detailFormatter(index, row) {
- var html = [];
- $.each(row, function (key, value) {
- html.push('<p><b>' + key + ':</b> ' + value + '</p>');
- });
- return html.join('');
- } // */
-
-function RequestData(method, callback) {
-    Request('/output', { method: method }, callback);
-}
-
-function SelectizeAll(selct) {
+function SelectizeAll() {
     function defHandler(ac) {
         return function(rst) {
             if(!rst.success) return;
@@ -19,6 +6,9 @@ function SelectizeAll(selct) {
             ac.addOptions(rst.result);
             ac.refreshOptions(false);
         };
+    }
+    function RequestData(method, callback) {
+        Request('/output', { method: method }, callback);
     }
 
     var ps = g_prescript;
@@ -42,9 +32,11 @@ function SelectizeAll(selct) {
     var mname = new AutoCompleter(ps.mcure_name);
     var pcond = new AutoCompleter(ps.pulse_cond);
 
+    var consti = new AutoCompleter(ps.constituent);
+
     RequestData("type", defHandler(type));
-    RequestData("source", defHandler(source));
     RequestData("book", defHandler(book));
+    source.setOptionTable(book.getOptionTable());
     RequestData("disease", defHandler(mdisease));
     RequestData("disease_name", defHandler(mname));
     RequestData("pulse_cond", defHandler(pcond));
@@ -57,12 +49,15 @@ function SelectizeAll(selct) {
     asymptom.setOptionTable(msymptom.getOptionTable());
     RequestData("medicine", defHandler(mmedicine));
     amedicine.setOptionTable(mmedicine.getOptionTable());
+    consti.setOptionTable(mmedicine.getOptionTable());
 }
 
+// 方剂录入框架（和方剂录入有关的数据，操作）
 pres_frame = {
     $table: $('#prescript-table'),
     $form: $('[name="prescription"]'),
-    $status: $('#label-status'),
+    $status: $('#prescript-dialog h4'),
+    $modal: $('#prescript-dialog'),
     edit_pres: null,
     Status : function(s) { return this.$status.text(s); },
     GetValues : function() {
@@ -152,7 +147,7 @@ pres_frame = {
     },
     // 显示录入标签页
     ShowInput : function () {
-        $('#pres-tab-ul a[href="#prescript-input"]').tab('show');
+        this.$modal.modal('show');
     },
     // 新建方剂
     New : function() {

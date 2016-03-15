@@ -32,7 +32,8 @@
            data-show-toggle="true"
            data-show-columns="true"
            data-url="/data?method=query&object=book"
-           data-resizable="true">
+           data-resizable="true"
+           >
         <thead>
         <tr>
             <th data-field="state" data-checkbox="true"></th>

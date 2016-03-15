@@ -1,4 +1,4 @@
-
+// 查询对话框（和查询条件有关的数据，操作）
 cond_dialog = {
     $modal: $('#cond-modal'),
     $table: $('#table-condition'),
@@ -8,6 +8,7 @@ cond_dialog = {
     $value: $('#cond-value'),
     condition: [],
     _id: 0,
+    // 获取输入的条件
     GetCondition: function() {
         return {
             cond_relate: this.$relate.val(),
@@ -16,6 +17,7 @@ cond_dialog = {
             cond_value: this.$value.val()
         };
     },
+    // 获取条件列表的JSON格式
     GetCondJSON: function() {
         var ret = [];
         for(var i = 0; i < this.condition.length; i++) {
@@ -34,9 +36,11 @@ cond_dialog = {
         }
         return ret.length ? JSON.stringify(ret) : null;
     },
+    // 获得一个新的条件ID
     GetID : function() {
         return this._id++;
     },
+    // 初始化
     Init: function() {
         // 字段选项
         for(var i = 0; i < g_fields.length; i++) {
@@ -88,11 +92,13 @@ cond_dialog = {
             self.$modal.modal('hide');
         });
     },
+    // 刷新条件列表
     Refresh: function() {
         this.$table.bootstrapTable('removeAll');
         for(var i = 0; i < this.condition.length; i++)
             this.$table.bootstrapTable('append', this.condition[i]);
     },
+    // 显示对话框
     Show: function() {
         this.$modal.modal('show');
         this.Refresh();
