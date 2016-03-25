@@ -2,7 +2,8 @@
 pres_table = $('#table-prescript');
 // 双击表格条目时进入编辑模式
 pres_table.on('dbl-click-row.bs.table', function(e, row, $element) {
-    pres_frame.Edit(row);
+    //pres_frame.Edit(row);
+    window.open('input.jsp?id='+row.id);
 });
 // 表格刷新时调用
 function onPresTableQuery(params) {
@@ -13,11 +14,8 @@ function onPresTableQuery(params) {
 }
 // ’新建‘按钮点击事件
 $('#button-new').click(function() {
-    pres_frame.New();
-});
-// ’编辑‘按钮点击事件
-$('#button-edit').click(function() {
-    ShowToolTip($('#button-edit'), '双击方剂条目编辑');
+    //pres_frame.New();
+    window.open('input.jsp');
 });
 // ’删除‘按钮点击事件
 $('#button-delete').click(function() {
@@ -37,11 +35,12 @@ $('#button-delete').click(function() {
 $('#button-query').click(function() {
     cond_dialog.Show();
 });
-
-// 处理表格不能调节的现象
-function UpTableWidth($table) {
-    window.setTimeout(function() {
-        $($table).wrap('<div style="width: 4000px; overflow: hidden"></div>');
-    }, 100);
-}
-UpTableWidth('#table-prescript');
+// 选择统计范围
+$('#button-statistics').click(function() {
+    $('#statistics-modal').modal('show');
+});
+// 处理表格不能调节列宽度的问题
+window.setTimeout(function() {
+    $('#table-prescript')
+        .wrap('<div style="width: 4000px; overflow: hidden"></div>');
+}, 200);

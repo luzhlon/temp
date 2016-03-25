@@ -110,3 +110,4 @@ function getIdSelections($table) {
         return row.id;
     });
 }
+

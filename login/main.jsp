@@ -20,8 +20,6 @@
   <script src="../js/bootstrap.min.js"></script>
   <script src="../js/bootstrap-table.min.js"></script>
   <script src="../js/bootstrap-dialog.min.js"></script>
-  <script src="../js/extensions/resizable/bootstrap-table-resizable.js"></script>
-  <script src="../js/extensions/resizable/colResizable.js"></script>
   <script src="../js/luzhlon.js"></script>
 </head>
 <body>
@@ -43,7 +41,7 @@
       <ul>
         <li><a id="welcome" href="main.jsp"><i class="fa fa-home fa-fw"></i>主页</a></li>
         <li><a id="prescript" href="main.jsp?page=prescript"><i class="fa fa-bar-chart fa-fw"></i>方剂</a></li>
-        <li><a id="book" href="main.jsp?page=book"><i class="fa fa-bar-chart fa-fw"></i>书籍</a></li>
+        <li><a id="book" href="main.jsp?page=book"><i class="fa fa-bar-chart fa-fw"></i>著作</a></li>
         <li><a id="import" href="main.jsp?page=import"><i class="fa fa-database fa-fw"></i>导入</a></li>
       </ul>
     </nav>
@@ -52,7 +50,6 @@
   <div class="templatemo-content col-1 light-gray-bg">
     <div class="templatemo-content-container">
       <div class="panel panel-default">
-
         <%
           String p = request.getParameter("page");
           if(p == null) p = "welcome";

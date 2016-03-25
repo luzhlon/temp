@@ -6,8 +6,12 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
+<script src="../js/extensions/resizable/bootstrap-table-resizable.min.js"></script>
+<script src="../js/extensions/resizable/colResizable.js"></script>
+
 <div class="panel-heading">
-    <h3 class="panel-title">书籍管理</h3>
+    <h3 class="panel-title">著作管理</h3>
 </div>
 <div class="panel-body" id="content">
     <!-- 工具条 -->
@@ -32,12 +36,11 @@
            data-show-toggle="true"
            data-show-columns="true"
            data-url="/data?method=query&object=book"
-           data-resizable="true"
            >
         <thead>
         <tr>
             <th data-field="state" data-checkbox="true"></th>
-            <th data-field="id" data-align="center">ID</th>
+            <th data-field="id" data-align="center" data-visible="false">ID</th>
             <th data-field="name" data-align="center">著作</th>
             <th data-field="author" data-align="center">作者</th>
             <th data-field="dynasty" data-align="center">朝代</th>
@@ -104,11 +107,6 @@
             }
         });
     });
-    /*
-    table_book.on('click-row.bs.table', function(e, row, $element) {
-        $('.success').removeClass('success');
-        $($element).addClass('success');
-    });  // */
     var book_dialog = {
         $modal : $('#book-modal'),
         edit_row: null,
@@ -151,7 +149,7 @@
             this.$modal.modal('hide');
             return false;
         },
-        InitModal : function() {
+        Init : function() {
             var self = this;
             var modal = this.$modal;
             $('#modal-button-cancel').click(function() {
@@ -178,7 +176,7 @@
             this.$modal.modal('show');
         }
     };
-    book_dialog.InitModal();
+    book_dialog.Init();
     table_book.on('dbl-click-row.bs.table', function(e, row, $element) {
         book_dialog.Edit(row);
     });
@@ -187,7 +185,5 @@
     });
     $('#button-edit').click(function() {
         book_dialog.Edit(table_book.bootstrapTable('getSelections')[0]);
-    });
-    $('#button-query').click(function() {
     });
 </script>

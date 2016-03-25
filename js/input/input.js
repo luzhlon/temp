@@ -54,12 +54,9 @@ function SelectizeAll() {
 
 // 方剂录入框架（和方剂录入有关的数据，操作）
 pres_frame = {
-    $table: $('#prescript-table'),
     $form: $('[name="prescription"]'),
-    $status: $('#prescript-dialog h4'),
     $modal: $('#prescript-dialog'),
     edit_pres: null,
-    Status : function(s) { return this.$status.text(s); },
     GetValues : function() {
         var psv = {};
         var ps = g_prescript;
@@ -102,9 +99,10 @@ pres_frame = {
         if(!this.CheckFields()) return false;
         var psv = this.GetValues();
         var method, suc_tip, fail_tip;
-        if(this.edit_pres) {
+        var to_update = this.edit_pres;
+        if(to_update) {
             method = 'update';
-            psv.id = this.edit_pres.id;
+            psv.id = to_update.id;
             suc_tip = psv.pres_name + '更新成功！';
             fail_tip = psv.pres_name + '更新失败:';
         } else {
@@ -112,15 +110,16 @@ pres_frame = {
             suc_tip = psv.pres_name + '添加成功！';
             fail_tip = psv.pres_name + '添加失败:';
         }
-        var self = this;
         Request('/data?object=prescription&method=' + method, psv, function(json) {
             if(json.success) {
                 // 数据录入成功
-                ShowToolTip($('#button-submit'), suc_tip);
-                g_prescript.pres_name.focus();
-                self.$table.bootstrapTable(
-                    'updateByUniqueId', {id:psv.id, row:psv});
-                //g_form.reset();
+                if (to_update) {
+                    alert(suc_tip);
+                    window.close();
+                } else {
+                    ShowToolTip($('#button-submit'), suc_tip);
+                    g_prescript.pres_name.focus();
+                }
             } else {
                 BootstrapDialog.show({
                     title: fail_tip,
@@ -136,7 +135,6 @@ pres_frame = {
         g_image_frame.Init();
         $('#button-submit').click(function() { self.Submit(); });
         $('#button-reset').click(function() { self.Reset(); });
-        this.Status("新的方剂");
         SelectizeAll();
         var ps = g_prescript;
         LimitNumberInput(ps.page);
@@ -145,26 +143,18 @@ pres_frame = {
         FilterInput(ps.sex, /[\s]/);
         FilterInput(ps.first_second, /[\s]/);
     },
-    // 显示录入标签页
-    ShowInput : function () {
-        this.$modal.modal('show');
-    },
     // 新建方剂
     New : function() {
-        this.Status("新的方剂");
         this.Reset();
         this.edit_pres = null;
         g_image_frame.setImage('');
-        this.ShowInput();
     },
     // 编辑方剂
     Edit : function(row) {
         if(!row) return;
-        this.Status("正在编辑方剂 ID:" + row.id);
         this.SetValues(row);
         this.edit_pres = row;
         g_image_frame.setImage(row.image);
-        this.ShowInput();
     }
 };
 
