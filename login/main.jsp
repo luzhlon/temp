@@ -27,8 +27,8 @@
 <div class="templatemo-flex-row">
   <div class="templatemo-sidebar">
     <header class="templatemo-site-header">
-      <div class="square"></div>
-      <h1>中医</h1>
+      <%--<div class="square"></div>--%>
+      <h1 align="center">中医方剂管理系统</h1>
     </header>
     <div class="profile-photo-container">
       <img src="../images/profile-photo.jpg" alt="Profile Photo" class="img-responsive">
@@ -39,10 +39,10 @@
     </div>
     <nav class="templatemo-left-nav">
       <ul>
-        <li><a id="welcome" href="main.jsp"><i class="fa fa-home fa-fw"></i>主页</a></li>
-        <li><a id="prescript" href="main.jsp?page=prescript"><i class="fa fa-bar-chart fa-fw"></i>方剂</a></li>
+        <li><a id="prescript" href="main.jsp?page=prescript"><i class="fa fa-bar-chart-o fa-fw"></i>方剂</a></li>
         <li><a id="book" href="main.jsp?page=book"><i class="fa fa-bar-chart fa-fw"></i>著作</a></li>
         <li><a id="import" href="main.jsp?page=import"><i class="fa fa-database fa-fw"></i>导入</a></li>
+        <li><a id="welcome" href="main.jsp?page=welcome"><i class="fa fa-home fa-fw"></i>手册</a></li>
       </ul>
     </nav>
   </div>
@@ -52,7 +52,7 @@
       <div class="panel panel-default">
         <%
           String p = request.getParameter("page");
-          if(p == null) p = "welcome";
+          if(p == null) p = "prescript";
           String PageStr = p + ".jsp";
           String SelStr = "a#" + p;
         %>

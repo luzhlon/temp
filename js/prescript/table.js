@@ -37,7 +37,7 @@ $('#button-query').click(function() {
 });
 // 选择统计范围
 $('#button-statistics').click(function() {
-    $('#statistics-modal').modal('show');
+    statistics_cond.Show();
 });
 // 处理表格不能调节列宽度的问题
 window.setTimeout(function() {

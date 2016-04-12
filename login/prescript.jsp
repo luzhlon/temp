@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: tom
-  Date: 16-1-26
-  Time: 上午12:54
-  To change this template use File | Settings | File Templates.
---%>
 <link href="../css/autocomplete.css" rel="stylesheet">
 <script src="../js/extensions/export/bootstrap-table-export.min.js"></script>
 <script src="../js/extensions/export/tableExport.js"></script>
@@ -19,82 +12,77 @@
 <div class="modal-dialog">
     <div class="modal-content">
         <div class="modal-header">
-                             <button type="button" class="close"
-                             data-dismiss="modal" aria-hidden="true">
-                             &times;
-                             </button>
-                             <h4 class="modal-title">
-                             编辑查询条件
-                             </h4>
-                             </div>
+             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+             &times;
+             </button>
+             <h4 class="modal-title"> 编辑查询条件 </h4>
+        </div>
         <div class="modal-body">
-                           <div id="condition-toolbar" class="row">
-                           <div style="width: 10%; margin-left: 3%;">
-                           <select class="form-control"
-                           id="cond-relate">
-                           <option value="AND">且</option>
-                           <option value="OR">或</option>
-                           </select>
-                           </div>
-                           <div style="width: 23%;">
-                           <select class="form-control" id="cond-field">
-                           </select>
-                           </div>
-                           <div style="width: 15%;">
-                           <select class="form-control"
-                           id="cond-method">
-                           </select>
-                           </div>
-                           <div style="width: 20%;">
-                           <input type="text"
-                           class="form-control" placeholder="值"
-                           id="cond-value"/>
-                           </div>
-                           <div style="width: 10%;">
-                           <button class="btn btn-info" type="button"
-                           id="button-cond-add">添加</button>
-                           </div>
-                           <div style="width: 10%;">
-                           <button class="btn btn-danger" type="button"
-                           id="button-cond-delete">删除</button>
-                           </div>
-                           <style>
-                           #condition-toolbar>div {
-                           display: inline-block;
-                           }
-                           </style>
-                           </div>
-                           <table id="table-condition"
-                           data-toggle="table"
-                           data-unique-id="id"
-                           data-show-header="false"
-                           data-click-to-select="true" >
-                           <thead> <tr>
-                           <th data-field="id" data-visible="false">ID</th>
-                           <th data-field="cond_relate" data-visible="false">Relate</th>
-                           <th data-field="show_relate" data-align="center">逻辑关系</th>
-                           <th data-field="cond_field" data-visible="false">Field</th>
-                           <th data-field="show_field" data-align="center">字段</th>
-                           <th data-field="cond_method" data-visible="false">Method</th>
-                           <th data-field="show_method" data-align="center">相等性</th>
-                           <th data-field="cond_value" data-align="center">值</th>
-                           <th data-field="state" data-checkbox="true"></th>
-                           </tr></thead>
-                           </table>
-                           </div>
+             <div id="condition-toolbar" class="row">
+             <div style="width: 10%; margin-left: 3%;">
+             <select class="form-control" id="cond-relate">
+                 <option value="AND">且</option>
+                 <option value="OR">或</option>
+             </select>
+             </div>
+             <div style="width: 23%;">
+             <select class="form-control" id="cond-field">
+             </select>
+             </div>
+             <div style="width: 15%;">
+             <select class="form-control"
+             id="cond-method">
+             </select>
+             </div>
+             <div style="width: 20%;">
+             <input type="text"
+             class="form-control" placeholder="值"
+             id="cond-value"/>
+             </div>
+             <div style="width: 10%;">
+             <button class="btn btn-info" type="button"
+             id="button-cond-add">添加</button>
+             </div>
+             <div style="width: 10%;">
+             <button class="btn btn-danger" type="button"
+             id="button-cond-delete">删除</button>
+             </div>
+             <style>
+             #condition-toolbar>div {
+             display: inline-block;
+             }
+             </style>
+             </div>
+             <table id="table-condition"
+             data-toggle="table"
+             data-unique-id="id"
+             data-show-header="false"
+             data-click-to-select="true" >
+             <thead> <tr>
+             <th data-field="id" data-visible="false">ID</th>
+             <th data-field="cond_relate" data-visible="false">Relate</th>
+             <th data-field="show_relate" data-align="center">逻辑关系</th>
+             <th data-field="cond_field" data-visible="false">Field</th>
+             <th data-field="show_field" data-align="center">字段</th>
+             <th data-field="cond_method" data-visible="false">Method</th>
+             <th data-field="show_method" data-align="center">相等性</th>
+             <th data-field="cond_value" data-align="center">值</th>
+             <th data-field="state" data-checkbox="true"></th>
+             </tr></thead>
+             </table>
+             </div>
         <div class="modal-footer">
-                             <button type="button" id="modal-button-cancel"
-                             class="btn btn-default"
-                             data-dismiss="modal">取消</button>
-                             <button type="submit" id="modal-button-ok"
-                             class="btn btn-primary">确定</button>
-                             </div>
+            <button type="button" id="modal-button-cancel" class="btn btn-default"
+            data-dismiss="modal">取消</button>
+            <button type="submit" id="modal-button-ok"
+            class="btn btn-primary">确定</button>
+        </div>
     </div><%-- /.modal-content --%>
 </div><%-- /.modal dialog--%>
 </div><%--modal--%>
 
-<%--选择统计范围--%>
-<div class="modal fade" id="statistics-modal" tabindex="-1" role="dialog"
+<%--统计--%>
+<div class="modal fade" id="statistics-result-modal" tabindex="-1" role="dialog"
      aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -104,10 +92,27 @@
                     &times;
                 </button>
                 <h4 class="modal-title">
-                    选择统计类型
+                    统计结果
                 </h4>
             </div>
-            <div class="modal-body">
+            <div class="modal-body" style="max-height: 500px">
+                <label>检索条件:</label>
+                <p id="search-condition"></p>
+                <label>检索结果:</label>
+                <p id="search-result"></p>
+                <table id="statistics-result-table"
+                       data-toggle="table"
+                       data-height="400"
+                       data-unique-id="id"
+                       data-show-export="true"
+                       data-export-types="['json','excel']"
+                       >
+                    <thead> <tr>
+                        <th data-field="id" data-align="center">药物ID</th>
+                        <th data-field="count" data-align="center">频数</th>
+                        <th data-field="rate" data-align="center">频率(%)</th>
+                    </tr></thead>
+                </table>
             </div>
             <div class="modal-footer">
             </div>
@@ -136,8 +141,8 @@
  data-show-columns="true"
  data-show-refresh="true"
  data-show-toggle="true"
- data-show-export="true"
  data-page-list="[10,20,50,100,200,500,1000,2000,5000]"
+ data-show-export="true"
  data-export-types="['json','excel']"
  data-url="/data?method=query&object=prescription"
  data-resizable="true"
@@ -187,5 +192,6 @@
 <script src="../js/autocomplete.js"></script>
 <script src="../js/luzhlon.js"></script>
 <script src="../js/prescript/prescript.js"></script>
+<script src="../js/prescript/statistics.js"></script>
 <script src="../js/prescript/table.js"></script>
 <script src="../js/prescript/condition.js"></script>
